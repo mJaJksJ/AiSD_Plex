@@ -5,6 +5,8 @@ class Figure
 	Point* rootPoint;
 	//Точка активная в данный момент (будет родительской при создании новых)
 	Point* activePoint;
+	//количество точек /*нужно для наименования новой точки*/
+	int vNum;
 
 public:
 
@@ -16,7 +18,7 @@ public:
 	//добавление точки и создание отрезка activePoint - _point
 	void addPoint(Point _point);
 	//установка новой activePoint
-	void s_activePoint(Point* _activePoint);
+	void setActivePoint(Point* _activePoint);
 	//удаление точки
 	void deletePoint(Point* _point);
 	//удаление отрезка

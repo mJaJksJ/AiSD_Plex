@@ -1,9 +1,11 @@
-#pragma once
+
 class Point
 {
 	//координаты точки
 	int x, y;
-	//точка, порадившая эту
+	//название точки
+	int name;
+    //точка, порадившая эту
 	Point* parentPoint;
 	//точки, порождаемые этой
 	Point** childPoint;
@@ -16,9 +18,10 @@ public:
 
 	Point& operator=(Point left);
 
-	Point* g_parentPoint();
-	void s_parentPoint(Point* _parentPoint);
-	
+	Point* getParentPoint();
+	void setParentPoint(Point* _parentPoint);
+	void setName(int _name);
+
 	//добаление точки-сына к activePoint
 	void addChild(Point _point);
 };

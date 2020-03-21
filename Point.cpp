@@ -22,16 +22,22 @@ Point& Point::operator=(Point left)
 	right.y = left.y;
 	right.parentPoint = left.parentPoint;
 	right.childPoint = left.childPoint;
+	right.name = left.name;
 	/*why error?*/
 	return *right;
 }
 
-Point* Point::g_parentPoint()
+Point* Point::getParentPoint()
 {
 	return parentPoint;
 }
 
-void Point::s_parentPoint(Point* _parentPoint)
+void Point::setParentPoint(Point* _parentPoint)
 {
 	parentPoint = _parentPoint;
+}
+
+void Point::setName(int _name)
+{
+	name = _name;
 }
