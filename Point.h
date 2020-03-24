@@ -1,4 +1,4 @@
-
+#pragma once
 class Point
 {
 	//координаты точки
@@ -21,6 +21,7 @@ public:
 	Point* getParentPoint();
 	void setParentPoint(Point* _parentPoint);
 	void setName(int _name);
+	int getName();
 
 	//добаление точки-сына к activePoint
 	void addChild(Point _point);

@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "Point.h"
 
@@ -5,14 +6,23 @@ Point::Point(int _x, int _y)
 {
 	x = _x;
 	y = _y;
+	name = 0;
+	parentPoint = NULL;
+	childPoint = NULL;
 }
 
 Point::Point()
 {
 	x = 0;
 	y = 0;
+	name = 0;
 	parentPoint = NULL;
 	childPoint = NULL;
+}
+
+Point::~Point()
+{
+	std::cout << "ququruza";
 }
 
 Point& Point::operator=(Point left)
@@ -24,7 +34,7 @@ Point& Point::operator=(Point left)
 	right.childPoint = left.childPoint;
 	right.name = left.name;
 	/*why error?*/
-	return *right;
+	return right;
 }
 
 Point* Point::getParentPoint()
@@ -41,3 +51,14 @@ void Point::setName(int _name)
 {
 	name = _name;
 }
+
+int Point::getName()
+{
+	return name;
+}
+
+void Point::addChild(Point _point)
+{
+	std::cout << "nothing else";
+};
+

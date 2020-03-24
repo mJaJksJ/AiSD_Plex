@@ -1,5 +1,19 @@
+#pragma once
 #include <iostream>
 #include "Figure.h"
+
+using std::cout;
+using std::endl;
+
+Figure::Figure()
+{
+	cout << "create figure";
+}
+
+Figure::~Figure()
+{
+	cout << "ququmber";
+}
 
 void Figure::createFigure(Point _point)
 {
@@ -22,4 +36,14 @@ void Figure::addPoint(Point _point)
 void Figure::setActivePoint(Point* _activePoint)
 {
 	activePoint = _activePoint;
+}
+
+Point* Figure::getActivePoint()
+{
+	return this->activePoint;
+}
+
+Point* Figure::getRoot()
+{
+	return rootPoint;
 }

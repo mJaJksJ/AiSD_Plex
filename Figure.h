@@ -1,3 +1,4 @@
+#pragma once
 #include "Point.h"
 class Figure
 {
@@ -19,9 +20,13 @@ public:
 	void addPoint(Point _point);
 	//установка новой activePoint
 	void setActivePoint(Point* _activePoint);
+	//возвращение новой activePoint
+	Point* getActivePoint();
 	//удаление точки
 	void deletePoint(Point* _point);
 	//удаление отрезка
 	void deleteLine(Point* point1, Point* point2);
+	//вернуть корневую точку
+	Point* getRoot();
 };
 
