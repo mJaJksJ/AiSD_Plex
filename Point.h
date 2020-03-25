@@ -1,6 +1,7 @@
 #pragma once
 class Point
 {
+	friend class Figure;
 	//coordinates
 private:
 	int x, y;

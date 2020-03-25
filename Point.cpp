@@ -1,12 +1,17 @@
 #include "Point.h"
+#include <iostream>
 //constructors
 Point::Point()
 {
 	locked = false;
 	numb_son = 0;
+	arr_points = NULL;
 }
 Point::Point(int _x, int _y, int _name)
 {
+	locked = false;
+	numb_son = 0;
+	arr_points = NULL;
 	x = _x;
 	y = _y;
 	name = _name;

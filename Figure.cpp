@@ -4,13 +4,18 @@ Figure::Figure()
 {
 	actPoint = Point();
 }
-//methods
 
  Figure::Figure(int _x, int _y, int _name)
 {
 	 actPoint = Point(_x, _y, _name);
 }
 
+ //destructor
+ Figure::~Figure()
+ {
+
+ }
+ //methods
 void Figure::addPoint(Point& obj)
 {
 	actPoint.contPoint(obj);

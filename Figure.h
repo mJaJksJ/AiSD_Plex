@@ -11,6 +11,8 @@ public:
 	//constructor
 	Figure();
 	Figure(int _x, int _y, int _name);
+	//destructor
+	~Figure();
 	//methods
 
 	void addPoint(Point& obj1);
