@@ -1,64 +1,105 @@
-#pragma once
-#include <iostream>
 #include "Point.h"
-
-Point::Point(int _x, int _y)
+//constructors
+Point::Point()
+{
+	locked = false;
+	numb_son = 0;
+}
+Point::Point(int _x, int _y, int _name)
 {
 	x = _x;
 	y = _y;
-	name = 0;
-	parentPoint = NULL;
-	childPoint = NULL;
-}
-
-Point::Point()
-{
-	x = 0;
-	y = 0;
-	name = 0;
-	parentPoint = NULL;
-	childPoint = NULL;
-}
-
-Point::~Point()
-{
-	std::cout << "ququruza";
-}
-
-Point& Point::operator=(Point left)
-{
-	Point right;
-	right.x = left.x;
-	right.y = left.y;
-	right.parentPoint = left.parentPoint;
-	right.childPoint = left.childPoint;
-	right.name = left.name;
-	/*why error?*/
-	return right;
-}
-
-Point* Point::getParentPoint()
-{
-	return parentPoint;
-}
-
-void Point::setParentPoint(Point* _parentPoint)
-{
-	parentPoint = _parentPoint;
-}
-
-void Point::setName(int _name)
-{
 	name = _name;
 }
-
-int Point::getName()
+//destructor
+Point::~Point()
 {
-	return name;
+
 }
 
-void Point::addChild(Point _point)
+//operators
+Point& Point::operator= (const Point& obj)
 {
-	std::cout << "nothing else";
-};
+	x = obj.x;
+	y = obj.y;
+	name = obj.name;
+
+	for (int i = 0; i < obj.numb_son; i++)
+		arr_points = obj.arr_points;
+
+
+	return *this;
+}
+
+//methods
+void Point::contPoint(Point& _cont_point)
+{
+	if (numb_son == 0)
+	{
+		arr_points = new Point[1];
+		arr_points[0] = _cont_point;
+		numb_son++;
+	}
+	else
+	{
+		Point* tempArr = new Point[numb_son + 1];
+		//creating temp array for adding point
+		for (int i = 0; i < numb_son; i++)
+			tempArr = arr_points;
+
+		tempArr[numb_son] = _cont_point;
+
+		for (int i = 0; i < numb_son; i++)
+			arr_points[i].~Point();
+
+		numb_son++;
+
+		arr_points = new Point[numb_son];
+
+		for (int i = 0; i < numb_son; i++)
+			arr_points[i] = tempArr[i];
+
+		for (int i = 0; i < numb_son; i++)
+			tempArr[i].~Point();
+
+		delete[] tempArr;
+	}
+
+}
+
+void Point::delContPoint(Point& _contPoint)
+{
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	while (arr_points[i].name != _contPoint.name && i != numb_son)
+		i++;
+	Point* tempArr = new Point[numb_son - 1];
+
+	while (j < numb_son)
+	{
+		if (k != i)
+		{
+			tempArr[j] = arr_points[k];
+			j++;
+			k++;
+		}
+		else
+			k++;
+	}
+
+
+	for (i = 0; i < numb_son; i++)
+		arr_points[i].~Point();
+
+	numb_son--;
+
+	arr_points = new Point[numb_son];
+	for (i = 0; i < numb_son; i++)
+		arr_points[i] = tempArr[i];
+
+	for (i = 0; i < numb_son; i++)
+		tempArr[i].~Point();
+	delete[]tempArr;
+}
 

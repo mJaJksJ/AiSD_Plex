@@ -1,49 +1,23 @@
-#pragma once
-#include <iostream>
 #include "Figure.h"
-
-using std::cout;
-using std::endl;
-
-Figure::Figure()
+//methods
+void Figure::addPoint(Point& obj)
 {
-	cout << "create figure";
+	actPoint.contPoint(obj);
+	obj.contPoint(actPoint);
 }
 
-Figure::~Figure()
+void Figure::delLine(Point& obj1, Point& obj2)
 {
-	cout << "ququmber";
+	obj1.delContPoint(obj2);
+	obj2.delContPoint(obj1);
 }
 
-void Figure::createFigure(Point _point)
+//properties
+Point Figure::getActPoint()
 {
-	this->rootPoint = &_point;
-	this->vNum = 1;
-	this->rootPoint->setName(this->vNum);
+	return actPoint;
 }
-
-void Figure::addPoint(Point _point)
+void Figure::setActPoint(Point& obj)
 {
-	Point newPoint;
-	newPoint = _point;
-	newPoint.setParentPoint(this->activePoint);
-	this->vNum++;
-	newPoint.setName(vNum);
-
-	this->activePoint->addChild(newPoint);
-}
-
-void Figure::setActivePoint(Point* _activePoint)
-{
-	activePoint = _activePoint;
-}
-
-Point* Figure::getActivePoint()
-{
-	return this->activePoint;
-}
-
-Point* Figure::getRoot()
-{
-	return rootPoint;
+	actPoint = obj;
 }

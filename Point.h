@@ -1,29 +1,30 @@
 #pragma once
 class Point
 {
-	//координаты точки
+	//coordinates
+private:
 	int x, y;
-	//название точки
+	//true, when we already passed this way
+	bool locked;
+	//array of point, that connected with THIS point
+	Point* arr_points;
+	//name of point
 	int name;
-    //точка, порадившая эту
-	Point* parentPoint;
-	//точки, порождаемые этой
-	Point** childPoint;
-
+	//count of sons
+	int numb_son;
+	//constructor
 public:
-
-	Point(int _x, int _y);
 	Point();
+	Point(int _x, int _y, int _name);
+	//destructor
 	~Point();
+	//operators
+	Point& operator= (const Point& obj);
+	//methods
+	//connect THIS point with another
+	void contPoint(Point& _contPoint);
+	//delete connection with point
+	void delContPoint(Point& _contPoint);
 
-	Point& operator=(Point left);
-
-	Point* getParentPoint();
-	void setParentPoint(Point* _parentPoint);
-	void setName(int _name);
-	int getName();
-
-	//добаление точки-сына к activePoint
-	void addChild(Point _point);
 };
 
