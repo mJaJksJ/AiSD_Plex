@@ -8,7 +8,11 @@ private:
 	int count;
 	
 public:
+	//constructor
+	Figure();
+	Figure(int _x, int _y, int _name);
 	//methods
+
 	void addPoint(Point& obj1);
 
 	void delLine(Point& obj1, Point& obj2);
@@ -17,6 +21,8 @@ public:
 	Point getActPoint();
 
 	void setActPoint(Point& obj);
+
+	void contIsolPoint(Point& obj1, Point& obj2);
 
 };
 
