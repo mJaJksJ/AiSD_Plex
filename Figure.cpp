@@ -1,4 +1,4 @@
-#include "Figure.h"
+#include "Figure.h"//я освоил гит
 //constructor
 Figure::Figure()
 {
