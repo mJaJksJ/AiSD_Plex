@@ -6,7 +6,7 @@ private:
 	Point actPoint;
 	//count of points
 	int count;
-	
+
 public:
 	//constructor
 	Figure();
@@ -15,16 +15,18 @@ public:
 	~Figure();
 	//methods
 
-	void addPoint(Point& obj1);
+	void addPoint(Point obj1);
 
 	void delLine(Point& obj1, Point& obj2);
 
+	void createFigure(Point _point);
+
 	//properties
-	Point getActPoint();
+
+	Point& getActivePoint();
 
 	void setActPoint(Point& obj);
 
 	void contIsolPoint(Point& obj1, Point& obj2);
 
 };
-

@@ -5,19 +5,21 @@ Figure::Figure()
 	actPoint = Point();
 }
 
- Figure::Figure(int _x, int _y, int _name)
+Figure::Figure(int _x, int _y, int _name)
 {
-	 actPoint = Point(_x, _y, _name);
+	actPoint = Point(_x, _y, _name);
 }
 
- //destructor
- Figure::~Figure()
- {
-
- }
- //methods
-void Figure::addPoint(Point& obj)
+//destructor
+Figure::~Figure()
 {
+
+}
+//methods
+void Figure::addPoint(Point obj)
+{
+	count++;
+	obj.name = count;
 	actPoint.contPoint(obj);
 	obj.contPoint(actPoint);
 }
@@ -33,8 +35,16 @@ void Figure::contIsolPoint(Point& obj1, Point& obj2)
 	obj1.contPoint(obj2);
 	obj2.contPoint(obj1);
 }
+
+void Figure::createFigure(Point _point)
+{
+	actPoint = _point;
+	count = 1;
+	actPoint.name = count;
+}
+
 //properties
-Point Figure::getActPoint()
+Point& Figure::getActivePoint()
 {
 	return actPoint;
 }

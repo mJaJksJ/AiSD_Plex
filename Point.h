@@ -17,6 +17,7 @@ private:
 public:
 	Point();
 	Point(int _x, int _y, int _name);
+	Point(int _x, int _y);
 	//destructor
 	~Point();
 	//operators
@@ -26,6 +27,11 @@ public:
 	void contPoint(Point& _contPoint);
 	//delete connection with point
 	void delContPoint(Point& _contPoint);
-
+	void lock();
+	void unlock();
+	//properties
+	int getName();
+	int getNumbSon();
+	Point* getArr_points();
+	bool isLocked();
 };
-

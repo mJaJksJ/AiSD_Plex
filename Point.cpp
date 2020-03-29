@@ -16,6 +16,15 @@ Point::Point(int _x, int _y, int _name)
 	y = _y;
 	name = _name;
 }
+Point::Point(int _x, int _y)
+{
+	x = _x;
+	y = _y;
+	numb_son = 0;
+	locked = false;
+	arr_points = NULL;
+	name = -1;
+}
 //destructor
 Point::~Point()
 {
@@ -50,7 +59,7 @@ void Point::contPoint(Point& _cont_point)
 		Point* tempArr = new Point[numb_son + 1];
 		//creating temp array for adding point
 		for (int i = 0; i < numb_son; i++)
-			tempArr = arr_points;
+			tempArr[i] = arr_points[i];
 
 		tempArr[numb_son] = _cont_point;
 
@@ -108,3 +117,33 @@ void Point::delContPoint(Point& _contPoint)
 	delete[]tempArr;
 }
 
+void Point::lock()
+{
+	locked = true;
+}
+
+void Point::unlock()
+{
+	locked = false;
+}
+
+//properties
+int Point::getName()
+{
+	return name;
+}
+
+int Point::getNumbSon()
+{
+	return numb_son;
+}
+
+Point* Point::getArr_points()
+{
+	return arr_points;
+}
+
+bool Point::isLocked()
+{
+	return locked;
+}
