@@ -31,10 +31,11 @@ public:
 
 	//--methods--
 
-	void contPoint(Point& _contPoint);
-	void delContPoint(Point& _contPoint);
+	void contPoint(Point* _contPoint);
+	void delContPoint(Point* _contPoint);
 	void lock();
 	void unlock();
+	Point* search(int _name, Point* _obj);
 
 	//--properties--
 

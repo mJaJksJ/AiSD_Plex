@@ -52,12 +52,12 @@ Point& Point::operator= (const Point& obj)
 //--methods--
 
 //connect THIS point with another
-void Point::contPoint(Point& _cont_point)
+void Point::contPoint(Point* _cont_point)
 {
 	if (numbSon == 0)
 	{
 		arrPoints = new Point[1];
-		arrPoints[0] = _cont_point;
+		arrPoints[0] = *_cont_point;
 		numbSon++;
 	}
 	else
@@ -67,7 +67,7 @@ void Point::contPoint(Point& _cont_point)
 		for (int i = 0; i < numbSon; i++)
 			tempArr[i] = arrPoints[i];
 
-		tempArr[numbSon] = _cont_point;
+		tempArr[numbSon] = *_cont_point;
 
 		for (int i = 0; i < numbSon; i++)
 			arrPoints[i].~Point();
@@ -87,12 +87,12 @@ void Point::contPoint(Point& _cont_point)
 
 }
 //delete connection with point
-void Point::delContPoint(Point& _contPoint)
+void Point::delContPoint(Point* _contPoint)
 {
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	while (arrPoints[i].name != _contPoint.name && i != numbSon)
+	while (arrPoints[i].name != _contPoint->name && i != numbSon)
 		i++;
 	Point* tempArr = new Point[numbSon - 1];
 
@@ -133,6 +133,37 @@ void Point::unlock()
 	locked = false;
 }
 
+Point* Point::search(int _name, Point* _point)
+{
+	if (_point->getNumbSon() != 0)
+	{
+		if (_point->getName() == _name)
+		{
+			return _point;
+		}
+		for (int i = 0; i < _point->getNumbSon(); i++)
+		{
+			if (_point->getArrPoints()[i].getName() > _point->getName())
+			{
+				_point->search(_name, &_point->getArrPoints()[i]);
+			}
+			else
+			{
+				if (_point->getArrPoints()[i].getName() == _name)
+				{
+					return &_point->getArrPoints()[i];
+				}
+			}
+		}
+	}
+	else
+	{
+		if (_point->getName() == _name)
+		{
+			return _point;
+		}
+	}
+}
 //--properties--
 
 int Point::getName()
