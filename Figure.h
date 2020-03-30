@@ -1,10 +1,12 @@
 #pragma once
 #include "Point.h"
 class Figure
-{   //the point we are working with
+{   
 private:
-	Point actPoint;
-	//count of points
+
+	//the point we are working with
+	Point activePoint;
+	//amount of points
 	int count;
 
 public:
@@ -13,23 +15,21 @@ public:
 	Figure(int _x, int _y, int _name);
 	//destructor
 	~Figure();
-	//methods
+
+
+	//--methods--
 
 	void addPoint(Point obj1);
-
-	void delLine(Point& obj1, Point& obj2);
-
+	void deleteLine(Point& obj1, Point& obj2);
 	void createFigure(Point _point);
-
 	void status();
-
-	//properties
-
-	Point& getActivePoint();
-
-	void setActPoint(Point& obj);
-
 	void contIsolPoint(Point& obj1, Point& obj2);
 
+
+	//--properties--
+
+	Point& getActivePoint();
+	void setActPoint(Point& obj);
 	int getCount();
+
 };

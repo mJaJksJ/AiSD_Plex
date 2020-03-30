@@ -1,17 +1,19 @@
 #include "Point.h"
 #include <iostream>
-//constructors
+
+//--constructors--
+
 Point::Point()
 {
 	locked = false;
-	numb_son = 0;
-	arr_points = NULL;
+	numbSon = 0;
+	arrPoints = NULL;
 }
 Point::Point(int _x, int _y, int _name)
 {
 	locked = false;
-	numb_son = 0;
-	arr_points = NULL;
+	numbSon = 0;
+	arrPoints = NULL;
 	x = _x;
 	y = _y;
 	name = _name;
@@ -20,81 +22,85 @@ Point::Point(int _x, int _y)
 {
 	x = _x;
 	y = _y;
-	numb_son = 0;
+	numbSon = 0;
 	locked = false;
-	arr_points = NULL;
+	arrPoints = NULL;
 	name = -1;
 }
+
 //destructor
 Point::~Point()
 {
 
 }
 
-//operators
+//--operators--
+
 Point& Point::operator= (const Point& obj)
 {
 	x = obj.x;
 	y = obj.y;
 	name = obj.name;
 
-	for (int i = 0; i < obj.numb_son; i++)
-		arr_points = obj.arr_points;
+	for (int i = 0; i < obj.numbSon; i++)
+		arrPoints = obj.arrPoints;
 
 
 	return *this;
 }
 
-//methods
+//--methods--
+
+//connect THIS point with another
 void Point::contPoint(Point& _cont_point)
 {
-	if (numb_son == 0)
+	if (numbSon == 0)
 	{
-		arr_points = new Point[1];
-		arr_points[0] = _cont_point;
-		numb_son++;
+		arrPoints = new Point[1];
+		arrPoints[0] = _cont_point;
+		numbSon++;
 	}
 	else
 	{
-		Point* tempArr = new Point[numb_son + 1];
+		Point* tempArr = new Point[numbSon + 1];
 		//creating temp array for adding point
-		for (int i = 0; i < numb_son; i++)
-			tempArr[i] = arr_points[i];
+		for (int i = 0; i < numbSon; i++)
+			tempArr[i] = arrPoints[i];
 
-		tempArr[numb_son] = _cont_point;
+		tempArr[numbSon] = _cont_point;
 
-		for (int i = 0; i < numb_son; i++)
-			arr_points[i].~Point();
+		for (int i = 0; i < numbSon; i++)
+			arrPoints[i].~Point();
 
-		numb_son++;
+		numbSon++;
 
-		arr_points = new Point[numb_son];
+		arrPoints = new Point[numbSon];
 
-		for (int i = 0; i < numb_son; i++)
-			arr_points[i] = tempArr[i];
+		for (int i = 0; i < numbSon; i++)
+			arrPoints[i] = tempArr[i];
 
-		for (int i = 0; i < numb_son; i++)
+		for (int i = 0; i < numbSon; i++)
 			tempArr[i].~Point();
 
 		delete[] tempArr;
 	}
 
 }
-
+//delete connection with point
 void Point::delContPoint(Point& _contPoint)
 {
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	while (arr_points[i].name != _contPoint.name && i != numb_son)
+	while (arrPoints[i].name != _contPoint.name && i != numbSon)
 		i++;
-	Point* tempArr = new Point[numb_son - 1];
+	Point* tempArr = new Point[numbSon - 1];
 
-	while (j < numb_son)
+	while (j < numbSon)
 	{
 		if (k != i)
 		{
-			tempArr[j] = arr_points[k];
+			tempArr[j] = arrPoints[k];
 			j++;
 			k++;
 		}
@@ -103,31 +109,32 @@ void Point::delContPoint(Point& _contPoint)
 	}
 
 
-	for (i = 0; i < numb_son; i++)
-		arr_points[i].~Point();
+	for (i = 0; i < numbSon; i++)
+		arrPoints[i].~Point();
 
-	numb_son--;
+	numbSon--;
 
-	arr_points = new Point[numb_son];
-	for (i = 0; i < numb_son; i++)
-		arr_points[i] = tempArr[i];
+	arrPoints = new Point[numbSon];
+	for (i = 0; i < numbSon; i++)
+		arrPoints[i] = tempArr[i];
 
-	for (i = 0; i < numb_son; i++)
+	for (i = 0; i < numbSon; i++)
 		tempArr[i].~Point();
 	delete[]tempArr;
 }
-
+//lock value will true
 void Point::lock()
 {
 	locked = true;
 }
-
+//lock value will false
 void Point::unlock()
 {
 	locked = false;
 }
 
-//properties
+//--properties--
+
 int Point::getName()
 {
 	return name;
@@ -135,12 +142,12 @@ int Point::getName()
 
 int Point::getNumbSon()
 {
-	return numb_son;
+	return numbSon;
 }
 
-Point* Point::getArr_points()
+Point* Point::getArrPoints()
 {
-	return arr_points;
+	return arrPoints;
 }
 
 bool Point::isLocked()

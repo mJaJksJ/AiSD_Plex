@@ -10,19 +10,7 @@ using std::endl;
 
 enum condition { addPoint, addLine, deleteLine, setActivePoint };
 
-void menu()
-{
-	cout << "	|--------------------MENU--------------------|" << endl;
-	cout << "	|                                            |" << endl;
-	cout << "	| Click number which action you want do      |" << endl;
-	cout << "	|____________________________________________|" << endl;
-	cout << "	| 0 - create point                           |" << endl;
-	cout << "	| 1 - delete point                           |" << endl;
-	cout << "	| 2 - delete line                            |" << endl;
-	cout << "	| 3 - set active point                       |" << endl;
-	cout << "	|____________________________________________|" << endl;
-}
-
+//-----------это то что я пытался натворить с обходом---
 
 //не визуализация а вывод в консоль
 void tempDrawer(Point _point)
@@ -32,7 +20,7 @@ void tempDrawer(Point _point)
 	cout << "sons :: ";
 	for (int i = 0; i < _point.getNumbSon(); i++)
 	{
-		cout << _point.getArr_points()[i].getName() << " ";
+		cout << _point.getArrPoints()[i].getName() << " ";
 	}
 	cout << endl;
 
@@ -46,14 +34,14 @@ void redrawing(Point& _point)
 	{
 		for (int i = 0; i < _point.getNumbSon(); i++)
 		{
-			if (_point.getArr_points()[i].isLocked() == false)
+			if (_point.getArrPoints()[i].isLocked() == false)
 			{
-				redrawing(_point.getArr_points()[i]);
+				redrawing(_point.getArrPoints()[i]);
 			}
 			else
 			{
-				_point.getArr_points()[i].lock();
-				tempDrawer(_point.getArr_points()[i]);
+				_point.getArrPoints()[i].lock();
+				tempDrawer(_point.getArrPoints()[i]);
 			}
 		}
 		_point.lock();
@@ -74,14 +62,14 @@ Point walk(Point _point)
 	{
 		for (int i = 0; i < _point.getNumbSon(); i++)
 		{
-			if (_point.getArr_points()[i].isLocked() == false)
+			if (_point.getArrPoints()[i].isLocked() == false)
 			{
-				walk(_point.getArr_points()[i]);
+				walk(_point.getArrPoints()[i]);
 			}
 			else
 			{
-				_point.getArr_points()[i].lock();
-				return _point.getArr_points()[i];
+				_point.getArrPoints()[i].lock();
+				return _point.getArrPoints()[i];
 			}
 		}
 		_point.lock();
@@ -101,13 +89,13 @@ void rewalk(Point& _point)
 	{
 		for (int i = 0; i < _point.getNumbSon(); i++)
 		{
-			if (_point.getArr_points()[i].isLocked() == true)
+			if (_point.getArrPoints()[i].isLocked() == true)
 			{
-				walk(_point.getArr_points()[i]);
+				walk(_point.getArrPoints()[i]);
 			}
 			else
 			{
-				_point.getArr_points()[i].unlock();
+				_point.getArrPoints()[i].unlock();
 			}
 		}
 		_point.unlock();
@@ -125,17 +113,17 @@ Point& changeActivePoint(int _name, Point& _activePoint)
 	{
 		for (int i = 0; i < _activePoint.getNumbSon(); i++)
 		{
-			if (_activePoint.getArr_points()[i].getName() == _name)
+			if (_activePoint.getArrPoints()[i].getName() == _name)
 			{
-				requiredPoint = _activePoint.getArr_points()[i];
+				requiredPoint = _activePoint.getArrPoints()[i];
 			}
-			if (_activePoint.getArr_points()[i].isLocked() == false)
+			if (_activePoint.getArrPoints()[i].isLocked() == false)
 			{
-				walk(_activePoint.getArr_points()[i]);
+				walk(_activePoint.getArrPoints()[i]);
 			}
 			else
 			{
-				_activePoint.getArr_points()[i].lock();
+				_activePoint.getArrPoints()[i].lock();
 			}
 		}
 		_activePoint.lock();
@@ -157,73 +145,42 @@ Point& changeActivePoint(int _name, Point& _activePoint)
 	return requiredPoint;
 }
 
+//-------------вот до сюда-----------
+
 void main()
 {
-	//---sfml part---
-	/*RenderWindow window(VideoMode(500, 500), "Flexis");
-	window.clear(Color::White);
-	Event event;
-	while (window.pollEvent(event))
-	{
-		if (event.type == Event::Closed)
-			window.close();
-	}
-	//---sfml part---
-
-
-
-	Figure tree;
-	tree.createFigure(Point(50, 50));*/
-
-
-	/*cout << tree.getActivePoint().getName();
-	cout << "count sons :: " << tree.getActivePoint().getNumbSon() << endl;
-
-	tree.addPoint(Point(100, 50));
-	cout << "count sons :: " << tree.getActivePoint().getNumbSon() << endl;
-	cout << "count sons :: " << tree.getActivePoint().getArr_points()[0].getNumbSon() << endl;
-	tree.addPoint(Point(50, 100));
-
-	for (int i = 0; i < tree.getActivePoint().getNumbSon(); i++)
-	{
-		cout << tree.getActivePoint().getArr_points()[i].getName();
-	}
-
-	tree.setActPoint(changeActivePoint(2, tree.getActivePoint()));
-	cout << tree.getActivePoint().getName();
-	tree.addPoint(Point(150, 50));
-	tree.setActPoint(changeActivePoint(3, tree.getActivePoint()));
-	tree.addPoint(Point(50, 150));
-	//changeActivePoint(1, tree.getActivePoint());
-	redrawing(tree.getActivePoint());*/
-
-
-
 	//--journal--
 	cout << "::Journal::" << endl << endl;
 	//--end journal--
 
 	//--sfml--
+	//window for drawing
 	RenderWindow window(VideoMode(800, 600), "Flexis");
+	//texture for menu
 	Texture textureMenu;
 	textureMenu.loadFromFile("main_menu.jpg");
+	//picture of menu
 	Sprite spriteMenu;
 	spriteMenu.setTexture(textureMenu);
 	spriteMenu.setPosition(0, 0);
+	//picture of point
 	CircleShape sfmlPoint(20);
+	//texture of point
 	Texture texturePoint;
 	texturePoint.loadFromFile("nums.jpg");
+	//edge line
 	Vertex line[2];
 	//--end sfml--
 
+	//for choise event
 	int thisStatus = -1;
+	//our figure
 	Figure tree;
-	tree.createFigure(Point(150, 150));
-	sfmlPoint.setPosition(tree.getActivePoint().getX(), tree.getActivePoint().getY());
 
 	while (window.isOpen())
 	{
-		Event event, tempEvent;
+		//events processor
+		Event event;
 		while (window.pollEvent(event))
 		{
 			switch (event.type)
@@ -254,13 +211,20 @@ void main()
 				}
 				break;
 
+				//нажатие кнопки мыши
 			case Event::MouseButtonPressed:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					if (thisStatus == addPoint)
 					{
-						tree.addPoint(Point(event.mouseButton.x, event.mouseButton.y));
-
+						if (tree.getCount() == 0)
+						{
+							tree.createFigure(Point(event.mouseButton.x, event.mouseButton.y));
+						}
+						else
+						{
+							tree.addPoint(Point(event.mouseButton.x, event.mouseButton.y));
+						}
 						//--journal--
 						cout << "New point: " << tree.getCount() << endl;
 						cout << "x: " << event.mouseButton.x << endl;
@@ -273,8 +237,8 @@ void main()
 						//--sfml--
 						sfmlPoint.setPosition(event.mouseButton.x, event.mouseButton.y);
 						sfmlPoint.setTexture(&texturePoint);
-						sfmlPoint.setTextureRect(IntRect(64 * (tree.getCount() % 10 - 1), 16*((tree.getCount()-1) / 10), 16, 16));
-						
+						sfmlPoint.setTextureRect(IntRect(20 * (tree.getCount() % 10 - 1), 20 * ((tree.getCount() - 1) / 10), 20, 20));
+
 						line[0] = Vertex(Vector2f(tree.getActivePoint().getX(), tree.getActivePoint().getY()));
 						line[1] = Vertex(Vector2f(event.mouseButton.x, event.mouseButton.y));
 						//--end sfml--
@@ -288,7 +252,7 @@ void main()
 					{
 
 					}
-					else if (thisStatus = setActivePoint)
+					else if (thisStatus == setActivePoint)
 					{
 
 					}
@@ -297,119 +261,15 @@ void main()
 			default:
 				break;
 			}
-
-
-
-			/*if (event.type == (Event::KeyPressed == 0))
-			{
-				window.clear(Color::Magenta);
-				int x, y;
-				while (window.waitEvent(event))
-				{
-					if (event.type == Event::MouseButtonPressed)
-					{
-						if (event.mouseButton.button == Mouse::Right)
-						{
-							window.clear(Color::Cyan);
-						}
-					}
-				}
-			}*/
 		}
 
-		/*if (Keyboard::isKeyPressed(Keyboard::Numpad0))
-		{
-			window.clear(Color::Blue);
-			int x, y;
-			while (window.waitEvent(event))
-			{
-				if (event.type == Event::MouseButtonPressed)
-				{
-					if (event.mouseButton.button == Mouse::Right)
-					{
-						window.clear(Color::Cyan);
-					}
-				}
-			}
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Numpad1))
-		{
-			window.clear(Color::Yellow);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Numpad2))
-		{
-			window.clear(Color::Red);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Numpad3))
-		{
-			window.clear(Color::White);
-		}*/
-
-
-		//window.clear();
+		//--sfml--
 		window.draw(line, 2, sf::Lines);
-		window.draw(spriteMenu);
 		window.draw(sfmlPoint);
+		window.draw(spriteMenu);
 		window.display();
-
-		
+		//--end sfml--
 	}
 
-
-
-
-
-
-
-	/*while (true)
-	{
-
-		//---sfml part---
-		Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == Event::Closed)
-				window.close();
-		}
-		//---sfml part---
-
-		menu();
-		cin >> thisStatus;
-		switch (thisStatus)
-		{
-		case createPoint:
-			cout << "whre you want it?" << endl;
-			int x, y;
-			cout << "x:: "; cin >> x;
-			cout << "y:: "; cin >> y;
-			if (window.isOpen())
-			{
-				sfmlPoint.setPosition(Vector2f(x,y));
-				window.draw(sfmlPoint);
-				window.display();
-			}
-			//redrawing(tree);
-			break;
-
-		case deletePoint:
-			//---------------------doing
-			//redrawing(tree);
-			break;
-
-		case deleteLine:
-			//---------------------doing
-			//redrawing(tree);
-			break;
-
-		case setActivePoint:
-			//---------------------doing
-			//redrawing(tree);
-			break;
-
-		default:
-			break;
-		}
-		//window.display();
-		cout << endl << "current active point #" << tree.getActivePoint().getName() << endl;
-	}*/
+	return;
 }
