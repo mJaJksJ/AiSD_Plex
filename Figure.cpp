@@ -1,4 +1,5 @@
-#include "Figure.h"//я освоил гит
+#include "Figure.h"
+#include <iostream>
 //constructor
 Figure::Figure()
 {
@@ -43,6 +44,14 @@ void Figure::createFigure(Point _point)
 	actPoint.name = count;
 }
 
+void Figure::status()
+{
+	std::cout << "--status--" << std::endl;
+	std::cout << "Active point: #" << actPoint.getName() << std::endl;
+	std::cout << "Amount of points: " << count << std::endl;
+	std::cout << "----------" << std::endl;
+}
+
 //properties
 Point& Figure::getActivePoint()
 {
@@ -51,4 +60,9 @@ Point& Figure::getActivePoint()
 void Figure::setActPoint(Point& obj)
 {
 	actPoint = obj;
+}
+
+int Figure::getCount()
+{
+	return count;
 }

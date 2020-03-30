@@ -21,6 +21,8 @@ public:
 
 	void createFigure(Point _point);
 
+	void status();
+
 	//properties
 
 	Point& getActivePoint();
@@ -29,4 +31,5 @@ public:
 
 	void contIsolPoint(Point& obj1, Point& obj2);
 
+	int getCount();
 };

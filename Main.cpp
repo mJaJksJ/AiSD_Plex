@@ -198,14 +198,29 @@ void main()
 	redrawing(tree.getActivePoint());*/
 
 
+
+	//--journal--
+	cout << "::Journal::" << endl << endl;
+	//--end journal--
+
+	//--sfml--
 	RenderWindow window(VideoMode(800, 600), "Flexis");
 	Texture textureMenu;
 	textureMenu.loadFromFile("main_menu.jpg");
 	Sprite spriteMenu;
 	spriteMenu.setTexture(textureMenu);
 	spriteMenu.setPosition(0, 0);
+	CircleShape sfmlPoint(20);
+	Texture texturePoint;
+	texturePoint.loadFromFile("nums.jpg");
+	Vertex line[2];
+	//--end sfml--
 
 	int thisStatus = -1;
+	Figure tree;
+	tree.createFigure(Point(150, 150));
+	sfmlPoint.setPosition(tree.getActivePoint().getX(), tree.getActivePoint().getY());
+
 	while (window.isOpen())
 	{
 		Event event, tempEvent;
@@ -223,21 +238,61 @@ void main()
 				if (event.key.code == Keyboard::Num0)
 				{
 					thisStatus = addPoint;
+					cout << "add point::" << endl;
 				}
 				else if (event.key.code == Keyboard::Num1)
 				{
 					thisStatus = addLine;
 				}
-				else if (event.key.code == Keyboard::Num1)
+				else if (event.key.code == Keyboard::Num2)
 				{
 					thisStatus = deleteLine;
 				}
-				else if (event.key.code == Keyboard::Num1)
+				else if (event.key.code == Keyboard::Num3)
 				{
 					thisStatus = setActivePoint;
 				}
 				break;
 
+			case Event::MouseButtonPressed:
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					if (thisStatus == addPoint)
+					{
+						tree.addPoint(Point(event.mouseButton.x, event.mouseButton.y));
+
+						//--journal--
+						cout << "New point: " << tree.getCount() << endl;
+						cout << "x: " << event.mouseButton.x << endl;
+						cout << "y: " << event.mouseButton.y << endl;
+						cout << endl;
+						tree.status();
+						cout << endl;
+						//--end journal--
+
+						//--sfml--
+						sfmlPoint.setPosition(event.mouseButton.x, event.mouseButton.y);
+						sfmlPoint.setTexture(&texturePoint);
+						sfmlPoint.setTextureRect(IntRect(64 * (tree.getCount() % 10 - 1), 16*((tree.getCount()-1) / 10), 16, 16));
+						
+						line[0] = Vertex(Vector2f(tree.getActivePoint().getX(), tree.getActivePoint().getY()));
+						line[1] = Vertex(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						//--end sfml--
+
+					}
+					else if (thisStatus == addLine)
+					{
+
+					}
+					else if (thisStatus == deleteLine)
+					{
+
+					}
+					else if (thisStatus = setActivePoint)
+					{
+
+					}
+				}
 				// мы не обрабатываем другие типы событий
 			default:
 				break;
@@ -289,9 +344,15 @@ void main()
 		{
 			window.clear(Color::White);
 		}*/
+
+
 		//window.clear();
+		window.draw(line, 2, sf::Lines);
 		window.draw(spriteMenu);
+		window.draw(sfmlPoint);
 		window.display();
+
+		
 	}
 
 

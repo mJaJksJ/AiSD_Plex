@@ -34,4 +34,6 @@ public:
 	int getNumbSon();
 	Point* getArr_points();
 	bool isLocked();
+	int getX();
+	int getY();
 };
