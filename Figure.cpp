@@ -5,30 +5,31 @@
 
 Figure::Figure()
 {
-	activePoint = Point();
+	activePoint = &Point();
 }
 
 Figure::Figure(int _x, int _y, int _name)
 {
-	activePoint = Point(_x, _y, _name);
+	activePoint = &Point(_x, _y, _name);
 }
 
 //destructor
-Figure::~Figure()
-{
+//Figure::~Figure()
+//{
 
-}
+//}
 
 
 //--methods--
 
 //добавление точки (проведение линии от актитвной точки к новой)
-void Figure::addPoint(Point obj)
+void Figure::addPoint(Point* obj)
 {
 	count++;
-	obj.name = count;
-	activePoint.contPoint(&obj);
-	obj.contPoint(&activePoint);
+	obj->name = count;
+	obj->contPoint(activePoint);
+	activePoint->contPoint(obj);
+	
 }
 //удаление линии
 void Figure::deleteLine(Point* obj1, Point* obj2)
@@ -45,16 +46,23 @@ void Figure::contIsolPoint(Point* obj1, Point* obj2)
 //создание фигуры
 void Figure::createFigure(Point _point)
 {
-	activePoint = _point;
+	activePoint = &_point;
 	count = 1;
-	activePoint.name = count;
+	activePoint->name = count;
 }
 //текущий статус
 void Figure::status()
 {
 	std::cout << "--status--" << std::endl;
-	std::cout << "Active point: #" << activePoint.getName() << std::endl;
+	std::cout << "Active point: #" << activePoint->getName() << std::endl;
 	std::cout << "Amount of points: " << count << std::endl;
+	if (activePoint->getNumbSon() > 0)
+	{
+		std::cout << "Sons of active point: ";
+		for (int i = 0; i < activePoint->getNumbSon(); i++)
+			std::cout << activePoint->getArrPoints()[i].getName() << " ";
+	}
+	std::cout << std::endl;
 	std::cout << "----------" << std::endl;
 }
 
@@ -90,11 +98,11 @@ Point* Figure::byPass(int _name, Point* _obj) //  in the first obj is active poi
 
 //--properties--
 
-Point& Figure::getActivePoint()
+Point* Figure::getActivePoint()
 {
 	return activePoint;
 }
-void Figure::setActPoint(Point& obj)
+void Figure::setActivePoint(Point* obj)
 {
 	activePoint = obj;
 }

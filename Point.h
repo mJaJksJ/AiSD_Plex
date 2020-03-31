@@ -23,7 +23,7 @@ public:
 	Point(int _x, int _y);
 
 	//destructor
-	~Point();
+	//~Point();
 
 	//--operators--
 

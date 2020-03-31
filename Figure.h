@@ -5,7 +5,7 @@ class Figure
 private:
 
 	//the point we are working with
-	Point activePoint;
+	Point* activePoint;
 	//amount of points
 	int count;
 
@@ -14,12 +14,12 @@ public:
 	Figure();
 	Figure(int _x, int _y, int _name);
 	//destructor
-	~Figure();
+	//~Figure();
 
 
 	//--methods--
 
-	void addPoint(Point obj1);
+	void addPoint(Point* obj1);
 	void deleteLine(Point* obj1, Point* obj2);
 	void createFigure(Point _point);
 	void status();
@@ -28,8 +28,8 @@ public:
 	
 	//--properties--
 
-	Point& getActivePoint();
-	void setActPoint(Point& obj);
+	Point* getActivePoint();
+	void setActivePoint(Point* obj);
 	int getCount();
 
 };

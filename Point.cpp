@@ -29,10 +29,10 @@ Point::Point(int _x, int _y)
 }
 
 //destructor
-Point::~Point()
-{
+//Point::~Point()
+//{
 
-}
+//}
 
 //--operators--
 
@@ -69,8 +69,8 @@ void Point::contPoint(Point* _cont_point)
 
 		tempArr[numbSon] = *_cont_point;
 
-		for (int i = 0; i < numbSon; i++)
-			arrPoints[i].~Point();
+		/*for (int i = 0; i < numbSon; i++)
+			arrPoints[i].~Point();*/
 
 		numbSon++;
 
@@ -79,8 +79,8 @@ void Point::contPoint(Point* _cont_point)
 		for (int i = 0; i < numbSon; i++)
 			arrPoints[i] = tempArr[i];
 
-		for (int i = 0; i < numbSon; i++)
-			tempArr[i].~Point();
+		/*for (int i = 0; i < numbSon; i++)
+			tempArr[i].~Point();*/
 
 		delete[] tempArr;
 	}
@@ -145,7 +145,12 @@ Point* Point::search(int _name, Point* _point)
 		{
 			if (_point->getArrPoints()[i].getName() > _point->getName())
 			{
-				_point->search(_name, &_point->getArrPoints()[i]);
+				Point* tempPoint;
+				tempPoint = _point->search(_name, &_point->getArrPoints()[i]);
+				if (tempPoint->getName() == _name)
+				{
+					return tempPoint;
+				}
 			}
 			else
 			{
