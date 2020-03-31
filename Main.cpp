@@ -177,10 +177,11 @@ void main()
 	//our figure
 	Figure tree;
 
-	int name;
 
 	while (window.isOpen())
 	{
+		int name;
+		int name1, name2;
 		//events processor
 		Event event;
 		while (window.pollEvent(event))
@@ -202,6 +203,12 @@ void main()
 				else if (event.key.code == Keyboard::Num1)
 				{
 					thisStatus = addLine;
+					cout << "add line between existing points:: \n(write name of points)\nline beetwen: ";
+					cin >> name1 >> name2;
+					cout << endl;
+					tree.contIsolPoint(tree.getActivePoint()->search(name1, tree.getActivePoint()), tree.getActivePoint()->search(name2, tree.getActivePoint()));
+					line[0] = Vertex(Vector2f(tree.getActivePoint()->search(name1, tree.getActivePoint())->getX(), tree.getActivePoint()->search(name1, tree.getActivePoint())->getY()));
+					line[1] = Vertex(Vector2f(tree.getActivePoint()->search(name2, tree.getActivePoint())->getX(), tree.getActivePoint()->search(name2, tree.getActivePoint())->getY()));
 				}
 				else if (event.key.code == Keyboard::Num2)
 				{
@@ -251,6 +258,8 @@ void main()
 						line[0] = Vertex(Vector2f(tree.getActivePoint()->getX(), tree.getActivePoint()->getY()));
 						line[1] = Vertex(Vector2f(event.mouseButton.x, event.mouseButton.y));
 						//--end sfml--
+
+						thisStatus = -1;
 					}
 				}
 				// мы не обрабатываем другие типы событий

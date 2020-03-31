@@ -147,9 +147,12 @@ Point* Point::search(int _name, Point* _point)
 			{
 				Point* tempPoint;
 				tempPoint = _point->search(_name, &_point->getArrPoints()[i]);
-				if (tempPoint->getName() == _name)
+				if (tempPoint != NULL)
 				{
-					return tempPoint;
+					if (tempPoint->getName() == _name)
+					{
+						return tempPoint;
+					}
 				}
 			}
 			else
@@ -166,6 +169,10 @@ Point* Point::search(int _name, Point* _point)
 		if (_point->getName() == _name)
 		{
 			return _point;
+		}
+		else
+		{
+			return NULL;
 		}
 	}
 }

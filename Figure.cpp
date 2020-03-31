@@ -56,6 +56,7 @@ void Figure::status()
 	std::cout << "--status--" << std::endl;
 	std::cout << "Active point: #" << activePoint->getName() << std::endl;
 	std::cout << "Amount of points: " << count << std::endl;
+	std::cout << "Amount of sons of active point: " << activePoint->getNumbSon() << std::endl;
 	if (activePoint->getNumbSon() > 0)
 	{
 		std::cout << "Sons of active point: ";
@@ -104,6 +105,7 @@ Point* Figure::getActivePoint()
 }
 void Figure::setActivePoint(Point* obj)
 {
+	std::cout << "++"<<obj->getNumbSon();
 	activePoint = obj;
 }
 int Figure::getCount()
