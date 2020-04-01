@@ -209,6 +209,9 @@ void main()
 					tree.contIsolPoint(tree.getActivePoint()->search(name1, tree.getActivePoint()), tree.getActivePoint()->search(name2, tree.getActivePoint()));
 					line[0] = Vertex(Vector2f(tree.getActivePoint()->search(name1, tree.getActivePoint())->getX(), tree.getActivePoint()->search(name1, tree.getActivePoint())->getY()));
 					line[1] = Vertex(Vector2f(tree.getActivePoint()->search(name2, tree.getActivePoint())->getX(), tree.getActivePoint()->search(name2, tree.getActivePoint())->getY()));
+					
+					tree.status();
+					cout << endl;				
 				}
 				else if (event.key.code == Keyboard::Num2)
 				{
