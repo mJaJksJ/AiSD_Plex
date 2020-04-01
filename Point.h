@@ -2,7 +2,7 @@
 class Point
 {
 	friend class Figure;
-	
+
 private:
 	//coordinates
 	int x, y;

@@ -1,4 +1,4 @@
-#include "Figure.h"
+п»ї#include "Figure.h"
 #include <iostream>
 
 //--constructor--
@@ -22,35 +22,37 @@ Figure::Figure(int _x, int _y, int _name)
 
 //--methods--
 
-//добавление точки (проведение линии от актитвной точки к новой)
+//Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ ГІГ®Г·ГЄГЁ (ГЇГ°Г®ГўГҐГ¤ГҐГ­ГЁГҐ Г«ГЁГ­ГЁГЁ Г®ГІ Г ГЄГІГЁГІГўГ­Г®Г© ГІГ®Г·ГЄГЁ ГЄ Г­Г®ГўГ®Г©)
 void Figure::addPoint(Point* obj)
 {
 	count++;
 	obj->name = count;
-	obj->contPoint(activePoint);
 	activePoint->contPoint(obj);
-	
+	//obj->contPoint(activePoint);
+	activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
+
 }
-//удаление линии
+//ГіГ¤Г Г«ГҐГ­ГЁГҐ Г«ГЁГ­ГЁГЁ
 void Figure::deleteLine(Point* obj1, Point* obj2)
 {
 	obj1->delContPoint(obj2);
 	obj2->delContPoint(obj1);
 }
-//соединение двух точек
-void Figure::contIsolPoint(Point* obj1, Point* obj2)
+//Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ Г¤ГўГіГµ ГІГ®Г·ГҐГЄ
+void Figure::contIsolPoint(Point* obj1)
 {
-	obj1->contPoint(obj2);
-	obj2->contPoint(obj1);
+	activePoint->contPoint(obj1);
+	activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
 }
-//создание фигуры
+//Г±Г®Г§Г¤Г Г­ГЁГҐ ГґГЁГЈГіГ°Г»
 void Figure::createFigure(Point _point)
 {
-	activePoint = &_point;
+	root = &_point;
+	activePoint = root;
 	count = 1;
 	activePoint->name = count;
 }
-//текущий статус
+//ГІГҐГЄГіГ№ГЁГ© Г±ГІГ ГІГіГ±
 void Figure::status()
 {
 	std::cout << "--status--" << std::endl;
@@ -105,10 +107,14 @@ Point* Figure::getActivePoint()
 }
 void Figure::setActivePoint(Point* obj)
 {
-	std::cout << "++"<<obj->getNumbSon();
+	std::cout << "++" << obj->getNumbSon();
 	activePoint = obj;
 }
 int Figure::getCount()
 {
 	return count;
+}
+Point* Figure::getRoot()
+{
+	return root;
 }

@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include "Figure.h"
 #include "Point.h"
 #include <SFML/Graphics.hpp>
@@ -10,9 +10,9 @@ using std::endl;
 
 enum condition { addPoint, addLine, deleteLine, setActivePoint };
 
-//-----------это то что я пытался натворить с обходом---
+//-----------ГЅГІГ® ГІГ® Г·ГІГ® Гї ГЇГ»ГІГ Г«Г±Гї Г­Г ГІГўГ®Г°ГЁГІГј Г± Г®ГЎГµГ®Г¤Г®Г¬---
 
-//не визуализация а вывод в консоль
+//Г­ГҐ ГўГЁГ§ГіГ Г«ГЁГ§Г Г¶ГЁГї Г  ГўГ»ГўГ®Г¤ Гў ГЄГ®Г­Г±Г®Г«Гј
 void tempDrawer(Point _point)
 {
 	cout << endl;
@@ -27,7 +27,7 @@ void tempDrawer(Point _point)
 	//cout << "Parent: point #" << (_point->getParentPoint())->getName;
 }
 
-//перерисовывание графа при каждом изменении
+//ГЇГҐГ°ГҐГ°ГЁГ±Г®ГўГ»ГўГ Г­ГЁГҐ ГЈГ°Г ГґГ  ГЇГ°ГЁ ГЄГ Г¦Г¤Г®Г¬ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГЁ
 void redrawing(Point& _point)
 {
 	if (_point.getNumbSon() != 0)
@@ -55,7 +55,7 @@ void redrawing(Point& _point)
 
 }
 
-//шаблон для др функций, - сама по себе бесполезна
+//ГёГ ГЎГ«Г®Г­ Г¤Г«Гї Г¤Г° ГґГіГ­ГЄГ¶ГЁГ©, - Г±Г Г¬Г  ГЇГ® Г±ГҐГЎГҐ ГЎГҐГ±ГЇГ®Г«ГҐГ§Г­Г 
 Point walk(Point _point)
 {
 	if (_point.getNumbSon() != 0)
@@ -82,7 +82,7 @@ Point walk(Point _point)
 	}
 }
 
-//установка флагов на unlocked
+//ГіГ±ГІГ Г­Г®ГўГЄГ  ГґГ«Г ГЈГ®Гў Г­Г  unlocked
 void rewalk(Point& _point)
 {
 	if (_point.getNumbSon() != 0)
@@ -145,7 +145,7 @@ Point& changeActivePoint(int _name, Point& _activePoint)
 	return requiredPoint;
 }
 
-//-------------вот до сюда-----------
+//-------------ГўГ®ГІ Г¤Г® Г±ГѕГ¤Г -----------
 
 void main()
 {
@@ -181,19 +181,18 @@ void main()
 	while (window.isOpen())
 	{
 		int name;
-		int name1, name2;
 		//events processor
 		Event event;
 		while (window.pollEvent(event))
 		{
 			switch (event.type)
 			{
-				// закрытие окна
+				// Г§Г ГЄГ°Г»ГІГЁГҐ Г®ГЄГ­Г 
 			case Event::Closed:
 				window.close();
 				break;
 
-				// нажатие клавиши
+				// Г­Г Г¦Г ГІГЁГҐ ГЄГ«Г ГўГЁГёГЁ
 			case Event::KeyPressed:
 				if (event.key.code == Keyboard::Num0)
 				{
@@ -203,15 +202,15 @@ void main()
 				else if (event.key.code == Keyboard::Num1)
 				{
 					thisStatus = addLine;
-					cout << "add line between existing points:: \n(write name of points)\nline beetwen: ";
-					cin >> name1 >> name2;
+					cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << "and : ";
+					cin >> name;
 					cout << endl;
-					tree.contIsolPoint(tree.getActivePoint()->search(name1, tree.getActivePoint()), tree.getActivePoint()->search(name2, tree.getActivePoint()));
-					line[0] = Vertex(Vector2f(tree.getActivePoint()->search(name1, tree.getActivePoint())->getX(), tree.getActivePoint()->search(name1, tree.getActivePoint())->getY()));
-					line[1] = Vertex(Vector2f(tree.getActivePoint()->search(name2, tree.getActivePoint())->getX(), tree.getActivePoint()->search(name2, tree.getActivePoint())->getY()));
-					
+					tree.contIsolPoint(tree.getRoot()->search(name, tree.getRoot()));
+					line[0] = Vertex(Vector2f(tree.getActivePoint()->getX(), tree.getActivePoint()->getY()));
+					line[1] = Vertex(Vector2f(tree.getRoot()->search(name, tree.getRoot())->getX(), tree.getRoot()->search(name, tree.getRoot())->getY()));
+
 					tree.status();
-					cout << endl;				
+					cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num2)
 				{
@@ -222,7 +221,7 @@ void main()
 					thisStatus = setActivePoint;
 					cout << "change active point:: \n(write name for new active point)\nnew active point: #";
 					cin >> name;
-					tree.setActivePoint(tree.getActivePoint()->search(name, tree.getActivePoint()));
+					tree.setActivePoint(tree.getRoot()->search(name, tree.getRoot()));
 
 					cout << endl;
 					cout << tree.getActivePoint()->getName();
@@ -230,7 +229,7 @@ void main()
 				}
 				break;
 
-				//нажатие кнопки мыши
+				//Г­Г Г¦Г ГІГЁГҐ ГЄГ­Г®ГЇГЄГЁ Г¬Г»ГёГЁ
 			case Event::MouseButtonPressed:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
@@ -265,7 +264,7 @@ void main()
 						thisStatus = -1;
 					}
 				}
-				// мы не обрабатываем другие типы событий
+				// Г¬Г» Г­ГҐ Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ Г¤Г°ГіГЈГЁГҐ ГІГЁГЇГ» Г±Г®ГЎГ»ГІГЁГ©
 			default:
 				break;
 			}
