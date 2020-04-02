@@ -12,11 +12,8 @@ enum condition { addPoint, addLine, deleteLine, setActivePoint };
 
 void main()
 {
-	//--journal--
 	cout << "::Journal::" << endl << endl;
-	//--end journal--
 
-	//--sfml--
 	//window for drawing
 	RenderWindow window(VideoMode(800, 600), "Flexis");
 	//texture for menu
@@ -31,9 +28,9 @@ void main()
 	//texture of point
 	Texture texturePoint;
 	texturePoint.loadFromFile("nums.jpg");
+	sfmlPoint.setTexture(&texturePoint);
 	//edge line
 	Vertex line[2];
-	//--end sfml--
 
 	//for choise event
 	int thisStatus = -1;
@@ -50,12 +47,11 @@ void main()
 		{
 			switch (event.type)
 			{
-				// çàêðûòèå îêíà
+
 			case Event::Closed:
 				window.close();
 				break;
 
-				// íàæàòèå êëàâèøè
 			case Event::KeyPressed:
 				if (event.key.code == Keyboard::Num0)
 				{
@@ -66,14 +62,9 @@ void main()
 				{
 					thisStatus = addLine;
 					cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << "and : ";
-					cin >> name;
-					cout << endl;
+					cin >> name; cout << endl;
 					tree.contIsolPoint(tree.getRoot()->search(name, tree.getRoot()));
-					line[0] = Vertex(Vector2f(tree.getActivePoint()->getX(), tree.getActivePoint()->getY()));
-					line[1] = Vertex(Vector2f(tree.getRoot()->search(name, tree.getRoot())->getX(), tree.getRoot()->search(name, tree.getRoot())->getY()));
-
-					tree.status();
-					cout << endl;
+					tree.status();	cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num2)
 				{
@@ -85,14 +76,11 @@ void main()
 					cout << "change active point:: \n(write name for new active point)\nnew active point: #";
 					cin >> name;
 					tree.setActivePoint(tree.getRoot()->search(name, tree.getRoot()));
-
 					cout << endl;
-					cout << tree.getActivePoint()->getName();
 					tree.status();
 				}
 				break;
 
-				//íàæàòèå êíîïêè ìûøè
 			case Event::MouseButtonPressed:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
@@ -106,39 +94,46 @@ void main()
 						{
 							tree.addPoint(&Point(event.mouseButton.x, event.mouseButton.y));
 						}
-						//--journal--
 						cout << "New point: " << tree.getCount() << endl;
 						cout << "x: " << event.mouseButton.x << endl;
 						cout << "y: " << event.mouseButton.y << endl;
 						cout << endl;
 						tree.status();
 						cout << endl;
-						//--end journal--
-
-						//--sfml--
-						sfmlPoint.setPosition(event.mouseButton.x, event.mouseButton.y);
-						sfmlPoint.setTexture(&texturePoint);
-						sfmlPoint.setTextureRect(IntRect(20 * (tree.getCount() % 10 - 1), 20 * ((tree.getCount() - 1) / 10), 20, 20));
-
-						line[0] = Vertex(Vector2f(tree.getActivePoint()->getX(), tree.getActivePoint()->getY()));
-						line[1] = Vertex(Vector2f(event.mouseButton.x, event.mouseButton.y));
-						//--end sfml--
 
 						thisStatus = -1;
 					}
 				}
-				// ìû íå îáðàáàòûâàåì äðóãèå òèïû ñîáûòèé
+
 			default:
 				break;
 			}
+
+			//---Drawer---
+
+			Point* tempPoint;
+			window.clear();
+			for (int i = 1; i <= tree.getCount(); i++)
+			{
+				tempPoint = tree.getRoot()->search(i, tree.getRoot());
+				if (tempPoint != NULL)
+				{
+					sfmlPoint.setPosition(tempPoint->getX(), tempPoint->getY());
+					sfmlPoint.setTextureRect(IntRect(20 * (tempPoint->getName() % 10), 20 * (tempPoint->getName() / 10), 20, 20));
+					window.draw(sfmlPoint);
+					for (int j = 0; j < tempPoint->getNumbSon(); j++)
+					{
+						line[0] = Vertex(Vector2f(tempPoint->getX(), tempPoint->getY()));
+						line[1] = Vertex(Vector2f(tempPoint->getArrPoints()[j].getX(), tempPoint->getArrPoints()[j].getY()));
+						window.draw(line, 2, sf::Lines);
+					}
+				}
+			}
+
 		}
 
-		//--sfml--
-		window.draw(line, 2, sf::Lines);
-		window.draw(sfmlPoint);
 		window.draw(spriteMenu);
 		window.display();
-		//--end sfml--
 	}
 
 	return;
