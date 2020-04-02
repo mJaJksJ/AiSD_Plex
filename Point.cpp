@@ -82,7 +82,7 @@ void Point::contPoint(Point* _cont_point)
 		/*for (int i = 0; i < numbSon; i++)
 			tempArr[i].~Point();*/
 
-		delete[] tempArr;
+		//delete[] tempArr;
 	}
 
 }
@@ -92,35 +92,38 @@ void Point::delContPoint(Point* _contPoint)
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	while (arrPoints[i].name != _contPoint->name && i != numbSon)
-		i++;
-	Point* tempArr = new Point[numbSon - 1];
-
-	while (j < numbSon)
+	if (getNumbSon() != 0)
 	{
-		if (k != i)
+		while (arrPoints[i].name != _contPoint->name && i != numbSon)
+			i++;
+		Point* tempArr = new Point[numbSon - 1];
+
+		while (j < numbSon)
 		{
-			tempArr[j] = arrPoints[k];
-			j++;
-			k++;
+			if (k != i)
+			{
+				tempArr[j] = arrPoints[k];
+				j++;
+				k++;
+			}
+			else
+				k++;
 		}
-		else
-			k++;
+
+
+		for (i = 0; i < numbSon; i++)
+			arrPoints[i].~Point();
+
+		numbSon--;
+
+		arrPoints = new Point[numbSon];
+		for (i = 0; i < numbSon; i++)
+			arrPoints[i] = tempArr[i];
+
+		/*for (i = 0; i < numbSon; i++)
+			tempArr[i].~Point();
+		delete[]tempArr;*/
 	}
-
-
-	for (i = 0; i < numbSon; i++)
-		arrPoints[i].~Point();
-
-	numbSon--;
-
-	arrPoints = new Point[numbSon];
-	for (i = 0; i < numbSon; i++)
-		arrPoints[i] = tempArr[i];
-
-	for (i = 0; i < numbSon; i++)
-		tempArr[i].~Point();
-	delete[]tempArr;
 }
 //lock value will true
 void Point::lock()

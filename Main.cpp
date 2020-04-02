@@ -61,7 +61,7 @@ void main()
 				else if (event.key.code == Keyboard::Num1)
 				{
 					thisStatus = addLine;
-					cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << "and : ";
+					cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 					cin >> name; cout << endl;
 					tree.contIsolPoint(tree.getRoot()->search(name, tree.getRoot()));
 					tree.status();	cout << endl;
@@ -69,6 +69,10 @@ void main()
 				else if (event.key.code == Keyboard::Num2)
 				{
 					thisStatus = deleteLine;
+					cout << "delete line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
+					cin >> name; cout << endl;
+					tree.deleteLine(tree.getRoot()->search(name, tree.getRoot()));
+					tree.status();	cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num3)
 				{
@@ -115,6 +119,7 @@ void main()
 			window.clear();
 			for (int i = 1; i <= tree.getCount(); i++)
 			{
+				tempPoint = NULL;
 				tempPoint = tree.getRoot()->search(i, tree.getRoot());
 				if (tempPoint != NULL)
 				{

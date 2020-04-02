@@ -33,10 +33,12 @@ void Figure::addPoint(Point* obj)
 
 }
 //óäàëåíèå ëèíèè
-void Figure::deleteLine(Point* obj1, Point* obj2)
+void Figure::deleteLine(Point* obj)
 {
-	obj1->delContPoint(obj2);
-	obj2->delContPoint(obj1);
+	count--;
+	activePoint->delContPoint(obj);
+	obj->delContPoint(activePoint);
+	
 }
 //ñîåäèíåíèå äâóõ òî÷åê
 void Figure::contIsolPoint(Point* obj1)
