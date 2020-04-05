@@ -32,7 +32,7 @@ void main()
 	//edge line
 	Vertex line[2];
 
-	//for choise event
+	//for choice event
 	int thisStatus = -1;
 	//our figure
 	Figure tree;
@@ -61,9 +61,14 @@ void main()
 				else if (event.key.code == Keyboard::Num1)
 				{
 					thisStatus = addLine;
-					cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
-					cin >> name; cout << endl;
-					tree.contIsolPoint(tree.getRoot()->search(name, tree.getRoot()));
+					if (tree.getCount() < 3)
+						cout << "add line::\nnot enough points, first add at least three points" << endl << endl;
+					else
+					{
+						cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
+						cin >> name; cout << endl;
+						tree.contIsolPoint(tree.getRoot()->search(name, tree.getRoot()));
+					}
 					tree.status();	cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num2)
@@ -117,21 +122,22 @@ void main()
 
 			Point* tempPoint;
 			window.clear();
-			for (int i = 1; i <= tree.getCount(); i++)
+			// <------------------------------------------------------------------------ THERE IS A BIG PROBLEM WITH DRAWER OR SEARCH
+			for (int i = 1; i <= tree.getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
 				tempPoint = tree.getRoot()->search(i, tree.getRoot());
 				if (tempPoint != NULL)
 				{
-					sfmlPoint.setPosition(tempPoint->getX(), tempPoint->getY());
-					sfmlPoint.setTextureRect(IntRect(20 * (tempPoint->getName() % 10), 20 * (tempPoint->getName() / 10), 20, 20));
-					window.draw(sfmlPoint);
 					for (int j = 0; j < tempPoint->getNumbSon(); j++)
 					{
 						line[0] = Vertex(Vector2f(tempPoint->getX(), tempPoint->getY()));
 						line[1] = Vertex(Vector2f(tempPoint->getArrPoints()[j].getX(), tempPoint->getArrPoints()[j].getY()));
 						window.draw(line, 2, sf::Lines);
 					}
+					sfmlPoint.setPosition(tempPoint->getX() - 20, tempPoint->getY() - 20);
+					sfmlPoint.setTextureRect(IntRect(20 * (tempPoint->getName() % 10), 20 * (tempPoint->getName() / 10), 20, 20));
+					window.draw(sfmlPoint);
 				}
 			}
 

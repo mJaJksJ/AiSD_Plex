@@ -1,60 +1,80 @@
 ﻿#include "Figure.h"
 #include <iostream>
-
+using std::cout;
+using std::endl;
 //--constructor--
 
 Figure::Figure()
 {
 	activePoint = &Point();
+	count = 0;
+	maxNumber = 0;
 }
 
 Figure::Figure(int _x, int _y, int _name)
 {
 	activePoint = &Point(_x, _y, _name);
+	count = 0;
+	maxNumber = 0;
 }
 
 //destructor
 //Figure::~Figure()
 //{
-
 //}
 
 
 //--methods--
 
-//äîáàâëåíèå òî÷êè (ïðîâåäåíèå ëèíèè îò àêòèòâíîé òî÷êè ê íîâîé)
+//add point (and connect it with active point)
 void Figure::addPoint(Point* obj)
 {
+	maxNumber++;
 	count++;
-	obj->name = count;
+	obj->name = maxNumber;
 	activePoint->contPoint(obj);
 	//obj->contPoint(activePoint);
 	activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
 
 }
-//óäàëåíèå ëèíèè
+//delete line between points
 void Figure::deleteLine(Point* obj)
 {
-	count--;
-	activePoint->delContPoint(obj);
-	obj->delContPoint(activePoint);
-	
+	bool flag = activePoint->delContPoint(obj);
+	if (flag)
+	{
+		obj->delContPoint(activePoint);
+		//if delete line between isolated point and another
+		if ((obj->getNumbSon() == 0) && (obj->getName() != root->getName()))
+			count--;
+		if ((activePoint->getNumbSon() == 0) && (activePoint->getName() != root->getName()))
+		{
+			activePoint = root;
+			count--;
+		}
+	}
+	else
+		cout << "there was no line between these  points" << endl << endl;
 }
-//ñîåäèíåíèå äâóõ òî÷åê
+//connect added point with active point
 void Figure::contIsolPoint(Point* obj1)
 {
-	activePoint->contPoint(obj1);
-	activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
+	bool flag = activePoint->contPoint(obj1);
+	if (flag)
+		activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
+	else
+		cout << "there was already a line between these  points" << endl << endl;
 }
-//ñîçäàíèå ôèãóðû
+//create figure (first point)
 void Figure::createFigure(Point _point)
 {
 	root = &_point;
 	activePoint = root;
 	count = 1;
-	activePoint->name = count;
+	maxNumber = 1;
+	activePoint->name = maxNumber;
 }
-//òåêóùèé ñòàòóñ
+//show status
 void Figure::status()
 {
 	std::cout << "--status--" << std::endl;
@@ -72,7 +92,7 @@ void Figure::status()
 }
 
 //bypass for search the point
-Point* Figure::byPass(int _name, Point* _obj) //  in the first obj is active point
+/*Point* Figure::byPass(int _name, Point* _obj) //  in the first obj is active point
 {
 	bool found = false;
 	for (int i = 0; i < _obj->getNumbSon(); i++)
@@ -99,7 +119,7 @@ Point* Figure::byPass(int _name, Point* _obj) //  in the first obj is active poi
 				byPass(_name, &_obj->getArrPoints()[i]);
 		}
 	}
-}
+}*/
 
 //--properties--
 
@@ -119,4 +139,8 @@ int Figure::getCount()
 Point* Figure::getRoot()
 {
 	return root;
+}
+int Figure::getMaxNumber()
+{
+	return maxNumber;
 }

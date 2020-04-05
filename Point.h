@@ -7,7 +7,7 @@ private:
 	//coordinates
 	int x, y;
 	//true, when we already passed this way
-	bool locked;
+	/*bool locked;*/
 	//array of point, that connected with THIS point
 	Point* arrPoints;
 	//name of point
@@ -31,10 +31,10 @@ public:
 
 	//--methods--
 
-	void contPoint(Point* _contPoint);
-	void delContPoint(Point* _contPoint);
-	void lock();
-	void unlock();
+	bool contPoint(Point* _contPoint);
+	bool delContPoint(Point* _contPoint);
+	//void lock();
+	//void unlock();
 	Point* search(int _name, Point* _obj);
 
 	//--properties--
@@ -42,7 +42,7 @@ public:
 	int getName();
 	int getNumbSon();
 	Point* getArrPoints();
-	bool isLocked();
+	//bool isLocked();
 	int getX();
 	int getY();
 };

@@ -5,13 +5,13 @@
 
 Point::Point()
 {
-	locked = false;
+	//locked = false;
 	numbSon = 0;
 	arrPoints = NULL;
 }
 Point::Point(int _x, int _y, int _name)
 {
-	locked = false;
+	//locked = false;
 	numbSon = 0;
 	arrPoints = NULL;
 	x = _x;
@@ -23,7 +23,7 @@ Point::Point(int _x, int _y)
 	x = _x;
 	y = _y;
 	numbSon = 0;
-	locked = false;
+	//locked = false;
 	arrPoints = NULL;
 	name = -1;
 }
@@ -42,9 +42,11 @@ Point& Point::operator= (const Point& obj)
 	y = obj.y;
 	name = obj.name;
 
+	numbSon = obj.numbSon;
+	delete[] arrPoints;
+	arrPoints = new Point[numbSon];
 	for (int i = 0; i < obj.numbSon; i++)
-		arrPoints = obj.arrPoints;
-
+		arrPoints[i] = obj.arrPoints[i];
 
 	return *this;
 }
@@ -52,7 +54,8 @@ Point& Point::operator= (const Point& obj)
 //--methods--
 
 //connect THIS point with another
-void Point::contPoint(Point* _cont_point)
+//if returned value is false there was already a connection between points
+bool Point::contPoint(Point* _cont_point)
 {
 	if (numbSon == 0)
 	{
@@ -62,11 +65,13 @@ void Point::contPoint(Point* _cont_point)
 	}
 	else
 	{
+		for (int i = 0; i < numbSon; i++)
+			if (arrPoints[i].getName() == _cont_point->getName())
+				return false; //there was already a connection between points
 		Point* tempArr = new Point[numbSon + 1];
 		//creating temp array for adding point
 		for (int i = 0; i < numbSon; i++)
 			tempArr[i] = arrPoints[i];
-
 		tempArr[numbSon] = *_cont_point;
 
 		/*for (int i = 0; i < numbSon; i++)
@@ -82,23 +87,28 @@ void Point::contPoint(Point* _cont_point)
 		/*for (int i = 0; i < numbSon; i++)
 			tempArr[i].~Point();*/
 
-		//delete[] tempArr;
+			//delete[] tempArr;
 	}
-
+	return true; //successful connection
 }
 //delete connection with point
-void Point::delContPoint(Point* _contPoint)
+//if returned value is false there was no line between the points
+bool Point::delContPoint(Point* _contPoint)
 {
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	if (getNumbSon() != 0)
+	if (numbSon != 0)
 	{
 		while (arrPoints[i].name != _contPoint->name && i != numbSon)
 			i++;
+
+		if (i == numbSon)
+			return false; //there was no line between the points
+		
 		Point* tempArr = new Point[numbSon - 1];
 
-		while (j < numbSon)
+		while (j < numbSon - 1)
 		{
 			if (k != i)
 			{
@@ -109,7 +119,6 @@ void Point::delContPoint(Point* _contPoint)
 			else
 				k++;
 		}
-
 
 		for (i = 0; i < numbSon; i++)
 			arrPoints[i].~Point();
@@ -123,10 +132,14 @@ void Point::delContPoint(Point* _contPoint)
 		/*for (i = 0; i < numbSon; i++)
 			tempArr[i].~Point();
 		delete[]tempArr;*/
+
+		return true; //successful deletion
 	}
+	else
+		return false; //there was no line between the points
 }
 //lock value will true
-void Point::lock()
+/*void Point::lock()
 {
 	locked = true;
 }
@@ -134,7 +147,7 @@ void Point::lock()
 void Point::unlock()
 {
 	locked = false;
-}
+}*/
 
 Point* Point::search(int _name, Point* _point)
 {
@@ -196,10 +209,10 @@ Point* Point::getArrPoints()
 	return arrPoints;
 }
 
-bool Point::isLocked()
-{
-	return locked;
-}
+/*bool Point::isLocked()
+//{
+//	return locked;
+}*/
 
 int Point::getX()
 {
