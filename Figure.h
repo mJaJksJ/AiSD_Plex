@@ -2,6 +2,7 @@
 #include "Point.h"
 class Figure
 {
+	friend class Point;
 private:
 
 	//the point we are working with

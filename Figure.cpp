@@ -1,4 +1,5 @@
-﻿#include "Figure.h"
+﻿#pragma once
+#include "Figure.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -54,7 +55,7 @@ void Figure::deleteLine(Point* obj)
 		}
 	}
 	else
-		cout << "there was no line between these  points" << endl << endl;
+		cout << "there was no line between these points" << endl << endl;
 }
 //connect added point with active point
 void Figure::contIsolPoint(Point* obj1)

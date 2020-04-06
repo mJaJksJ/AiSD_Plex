@@ -67,7 +67,7 @@ void main()
 					{
 						cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 						cin >> name; cout << endl;
-						tree.contIsolPoint(tree.getRoot()->search(name, tree.getRoot()));
+						tree.contIsolPoint(tree.getRoot()->deepSearch(name, &tree));
 					}
 					tree.status();	cout << endl;
 				}
@@ -76,7 +76,7 @@ void main()
 					thisStatus = deleteLine;
 					cout << "delete line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 					cin >> name; cout << endl;
-					tree.deleteLine(tree.getRoot()->search(name, tree.getRoot()));
+					tree.deleteLine(tree.getRoot()->deepSearch(name, &tree));
 					tree.status();	cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num3)
@@ -84,7 +84,7 @@ void main()
 					thisStatus = setActivePoint;
 					cout << "change active point:: \n(write name for new active point)\nnew active point: #";
 					cin >> name;
-					tree.setActivePoint(tree.getRoot()->search(name, tree.getRoot()));
+					tree.setActivePoint(tree.getRoot()->deepSearch(name, &tree));
 					cout << endl;
 					tree.status();
 				}
@@ -126,7 +126,7 @@ void main()
 			for (int i = 1; i <= tree.getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
-				tempPoint = tree.getRoot()->search(i, tree.getRoot());
+				tempPoint = tree.getRoot()->deepSearch(i, &tree);
 				if (tempPoint != NULL)
 				{
 					for (int j = 0; j < tempPoint->getNumbSon(); j++)

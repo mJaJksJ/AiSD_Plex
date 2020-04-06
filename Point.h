@@ -1,4 +1,6 @@
 #pragma once
+#include "Figure.h"
+
 class Point
 {
 	friend class Figure;
@@ -33,9 +35,8 @@ public:
 
 	bool contPoint(Point* _contPoint);
 	bool delContPoint(Point* _contPoint);
-	//void lock();
-	//void unlock();
 	Point* search(int _name, Point* _obj);
+	Point* deepSearch(int _name, Figure* _figure);
 
 	//--properties--
 

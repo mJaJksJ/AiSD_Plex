@@ -1,5 +1,7 @@
+#pragma once
 #include "Point.h"
 #include <iostream>
+#include <stack>
 
 //--constructors--
 
@@ -138,16 +140,6 @@ bool Point::delContPoint(Point* _contPoint)
 	else
 		return false; //there was no line between the points
 }
-//lock value will true
-/*void Point::lock()
-{
-	locked = true;
-}
-//lock value will false
-void Point::unlock()
-{
-	locked = false;
-}*/
 
 Point* Point::search(int _name, Point* _point)
 {
@@ -191,6 +183,40 @@ Point* Point::search(int _name, Point* _point)
 			return NULL;
 		}
 	}
+}
+
+Point* Point::deepSearch(int _name, Figure* _figure)
+{
+	int* nodes = new int[_figure->getMaxNumber()];
+	for (int i = 0; i < _figure->getMaxNumber(); i++)
+	{
+		nodes[i] = 0;
+	}
+	std::stack<Point*> tempStack;
+	tempStack.push(_figure->getRoot());
+	while (!tempStack.empty())
+	{
+		Point* node = tempStack.top();
+		if (node->getName() == _name)
+		{
+			return node;
+		}
+		tempStack.pop();
+		if (nodes[node->getName()] == 2)
+		{
+			continue;
+		}
+		nodes[node->getName()] = 2;
+		for (int j = 0; j < node->getNumbSon(); j++)
+		{
+			if (nodes[node->getArrPoints()[j].getName()] != 2)
+			{
+				tempStack.push(&node->getArrPoints()[j]);
+				nodes[node->getArrPoints()[j].getName()] = 1;
+			}
+		}
+	}
+	return NULL;
 }
 //--properties--
 
