@@ -38,4 +38,5 @@ public:
 	void setActivePoint(Point* obj);
 	int getCount();
 	int getMaxNumber();
+	void setMaxNumber(int _maxNumber);
 };

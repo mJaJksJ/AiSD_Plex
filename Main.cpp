@@ -44,6 +44,7 @@ void loadFromFile(Figure* _tree)
 					_tree->getRoot()->getArrPoints()[_tree->getRoot()->getNumbSon() - 1].setName(_name);
 				}
 			}
+			_tree->setMaxNumber(_name);
 			//add connection with points
 			for (int i = 0; i < _count; i++)
 			{
@@ -195,6 +196,7 @@ void main()
 					tree.getRoot()->getArrPoints()[tree.getRoot()->getNumbSon() - 1].setName(_name);
 				}
 			}
+			tree.setMaxNumber(_name);
 			//add connection with points
 			for (int i = 0; i < _count; i++)
 			{

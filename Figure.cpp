@@ -146,3 +146,7 @@ int Figure::getMaxNumber()
 {
 	return maxNumber;
 }
+void Figure::setMaxNumber(int _maxNumber)
+{
+	maxNumber = _maxNumber;
+}
