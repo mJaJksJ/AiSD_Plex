@@ -8,8 +8,6 @@ class Point
 private:
 	//coordinates
 	int x, y;
-	//true, when we already passed this way
-	/*bool locked;*/
 	//array of point, that connected with THIS point
 	Point* arrPoints;
 	//name of point
@@ -35,15 +33,15 @@ public:
 
 	bool contPoint(Point* _contPoint);
 	bool delContPoint(Point* _contPoint);
-	Point* search(int _name, Point* _obj);
+	//Point* search(int _name, Point* _obj);
 	Point* deepSearch(int _name, Figure* _figure);
 
 	//--properties--
 
+	void setName(int _name);
 	int getName();
 	int getNumbSon();
 	Point* getArrPoints();
-	//bool isLocked();
 	int getX();
 	int getY();
 };

@@ -3,6 +3,7 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+
 //--constructor--
 
 Figure::Figure()
@@ -39,7 +40,7 @@ void Figure::addPoint(Point* obj)
 
 }
 //delete line between points
-void Figure::deleteLine(Point* obj)
+void Figure::deleteLine(Point* obj, bool from_file)
 {
 	bool flag = activePoint->delContPoint(obj);
 	if (flag)
@@ -55,7 +56,8 @@ void Figure::deleteLine(Point* obj)
 		}
 	}
 	else
-		cout << "there was no line between these points" << endl << endl;
+		if (!from_file)
+			cout << "there was no line between these points" << endl << endl;
 }
 //connect added point with active point
 void Figure::contIsolPoint(Point* obj1)
@@ -130,7 +132,6 @@ Point* Figure::getActivePoint()
 }
 void Figure::setActivePoint(Point* obj)
 {
-	std::cout << "++" << obj->getNumbSon();
 	activePoint = obj;
 }
 int Figure::getCount()

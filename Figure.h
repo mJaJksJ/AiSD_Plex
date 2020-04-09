@@ -25,7 +25,7 @@ public:
 	//--methods--
 
 	void addPoint(Point* obj1);
-	void deleteLine(Point* obj1);
+	void deleteLine(Point* obj1, bool out_file);
 	void createFigure(Point _point);
 	void status();
 	void contIsolPoint(Point* obj1);

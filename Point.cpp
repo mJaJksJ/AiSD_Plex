@@ -141,49 +141,49 @@ bool Point::delContPoint(Point* _contPoint)
 		return false; //there was no line between the points
 }
 
-Point* Point::search(int _name, Point* _point)
-{
-	if (_point->getNumbSon() != 0)
-	{
-		if (_point->getName() == _name)
-		{
-			return _point;
-		}
-		for (int i = 0; i < _point->getNumbSon(); i++)
-		{
-			if (_point->getArrPoints()[i].getName() > _point->getName())
-			{
-				Point* tempPoint;
-				tempPoint = _point->search(_name, &_point->getArrPoints()[i]);
-				if (tempPoint != NULL)
-				{
-					if (tempPoint->getName() == _name)
-					{
-						return tempPoint;
-					}
-				}
-			}
-			else
-			{
-				if (_point->getArrPoints()[i].getName() == _name)
-				{
-					return &_point->getArrPoints()[i];
-				}
-			}
-		}
-	}
-	else
-	{
-		if (_point->getName() == _name)
-		{
-			return _point;
-		}
-		else
-		{
-			return NULL;
-		}
-	}
-}
+//Point* Point::search(int _name, Point* _point)
+//{
+//	if (_point->getNumbSon() != 0)
+//	{
+//		if (_point->getName() == _name)
+//		{
+//			return _point;
+//		}
+//		for (int i = 0; i < _point->getNumbSon(); i++)
+//		{
+//			if (_point->getArrPoints()[i].getName() > _point->getName())
+//			{
+//				Point* tempPoint;
+//				tempPoint = _point->search(_name, &_point->getArrPoints()[i]);
+//				if (tempPoint != NULL)
+//				{
+//					if (tempPoint->getName() == _name)
+//					{
+//						return tempPoint;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				if (_point->getArrPoints()[i].getName() == _name)
+//				{
+//					return &_point->getArrPoints()[i];
+//				}
+//			}
+//		}
+//	}
+//	else
+//	{
+//		if (_point->getName() == _name)
+//		{
+//			return _point;
+//		}
+//		else
+//		{
+//			return NULL;
+//		}
+//	}
+//}
 
 Point* Point::deepSearch(int _name, Figure* _figure)
 {
@@ -220,6 +220,11 @@ Point* Point::deepSearch(int _name, Figure* _figure)
 }
 //--properties--
 
+void Point::setName(int _name)
+{
+	name = _name;
+}
+
 int Point::getName()
 {
 	return name;
@@ -234,11 +239,6 @@ Point* Point::getArrPoints()
 {
 	return arrPoints;
 }
-
-/*bool Point::isLocked()
-//{
-//	return locked;
-}*/
 
 int Point::getX()
 {
