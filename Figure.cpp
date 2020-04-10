@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Figure.h"
 #include <iostream>
 using std::cout;
@@ -62,9 +62,13 @@ void Figure::deleteLine(Point* obj, bool from_file)
 //connect added point with active point
 void Figure::contIsolPoint(Point* obj1)
 {
-	bool flag = activePoint->contPoint(obj1);
-	if (flag)
-		activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
+	bool flag;
+		flag = activePoint->contPoint(obj1);
+		if (flag)
+		{
+			/*activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);*/
+			obj1->contPoint(activePoint);
+		}
 	else
 		cout << "there was already a line between these  points" << endl << endl;
 }

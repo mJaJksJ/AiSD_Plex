@@ -45,7 +45,7 @@ Point& Point::operator= (const Point& obj)
 	name = obj.name;
 
 	numbSon = obj.numbSon;
-	delete[] arrPoints;
+	/*delete[] arrPoints;*/
 	arrPoints = new Point[numbSon];
 	for (int i = 0; i < obj.numbSon; i++)
 		arrPoints[i] = obj.arrPoints[i];
@@ -107,7 +107,7 @@ bool Point::delContPoint(Point* _contPoint)
 
 		if (i == numbSon)
 			return false; //there was no line between the points
-		
+
 		Point* tempArr = new Point[numbSon - 1];
 
 		while (j < numbSon - 1)
@@ -122,8 +122,8 @@ bool Point::delContPoint(Point* _contPoint)
 				k++;
 		}
 
-		for (i = 0; i < numbSon; i++)
-			arrPoints[i].~Point();
+		/*for (i = 0; i < numbSon; i++)
+			arrPoints[i].~Point();*/
 
 		numbSon--;
 
@@ -132,8 +132,8 @@ bool Point::delContPoint(Point* _contPoint)
 			arrPoints[i] = tempArr[i];
 
 		/*for (i = 0; i < numbSon; i++)
-			tempArr[i].~Point();
-		delete[]tempArr;*/
+			tempArr[i].~Point();*/
+		delete[]tempArr;
 
 		return true; //successful deletion
 	}
@@ -187,6 +187,7 @@ bool Point::delContPoint(Point* _contPoint)
 
 Point* Point::deepSearch(int _name, Figure* _figure)
 {
+	/*bool flag = false;*/
 	int* nodes = new int[_figure->getMaxNumber()];
 	for (int i = 0; i < _figure->getMaxNumber(); i++)
 	{
@@ -216,7 +217,8 @@ Point* Point::deepSearch(int _name, Figure* _figure)
 			}
 		}
 	}
-	return NULL;
+	
+		return NULL;
 }
 //--properties--
 

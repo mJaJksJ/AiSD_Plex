@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <fstream>
 #include "Figure.h"
 #include "Point.h"
@@ -329,7 +329,7 @@ void main()
 			for (int i = 1; i <= tree.getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
-				tempPoint = tree.getRoot()->deepSearch(i, &tree);
+				tempPoint = tree.getRoot()->deepSearch(i, &tree); //возвращает нулл и поэтому косяк
 				if (tempPoint != NULL)
 				{
 					for (int j = 0; j < tempPoint->getNumbSon(); j++)
@@ -342,6 +342,8 @@ void main()
 					sfmlPoint.setTextureRect(IntRect(20 * (tempPoint->getName() % 10), 20 * (tempPoint->getName() / 10), 20, 20));
 					window.draw(sfmlPoint);
 				}
+				else
+					cout << "something wrong" << endl;
 			}
 
 		}
