@@ -57,64 +57,78 @@ Point& Point::operator= (const Point& obj)
 
 //connect THIS point with another
 //if returned value is false there was already a connection between points
-bool Point::contPoint(Point* _cont_point)
+Point* Point::contPoint(Point* _cont_point)
 {
+	Point* tempPoint = new Point[1];
+	tempPoint = _cont_point;
 	if (numbSon == 0)
 	{
 		arrPoints = new Point[1];
-		arrPoints[0] = *_cont_point;
+		arrPoints[0] = *tempPoint;
 		numbSon++;
+
+		/*tempPoint.arrPoints = new Point[1];
+		tempPoint.arrPoints[0] = *this;
+		tempPoint.numbSon++;*/
+
 	}
 	else
 	{
 		for (int i = 0; i < numbSon; i++)
-			if (arrPoints[i].getName() == _cont_point->getName())
-				return false; //there was already a connection between points
+		{ 
+			if (arrPoints[i].name == tempPoint->name)
+				return NULL; //there was already a connection between points
+			}
 		Point* tempArr = new Point[numbSon + 1];
 		//creating temp array for adding point
 		for (int i = 0; i < numbSon; i++)
 			tempArr[i] = arrPoints[i];
-		tempArr[numbSon] = *_cont_point;
-
-		/*for (int i = 0; i < numbSon; i++)
-			arrPoints[i].~Point();*/
-
+		tempArr[numbSon] = *tempPoint;
 		numbSon++;
-
 		arrPoints = new Point[numbSon];
-
 		for (int i = 0; i < numbSon; i++)
 			arrPoints[i] = tempArr[i];
 
-		/*for (int i = 0; i < numbSon; i++)
-			tempArr[i].~Point();*/
 
-			//delete[] tempArr;
+
+		/*tempArr = new Point[tempPoint.numbSon + 1];
+		for (int i = 0; i < tempPoint.numbSon; i++)
+			tempArr[i] = tempPoint.arrPoints[i];
+		tempPoint.arrPoints[tempPoint.numbSon] = *this;
+		tempPoint.numbSon++;
+		tempPoint.arrPoints = new Point[tempPoint.numbSon];
+		for (int i = 0; i < tempPoint.numbSon; i++)
+			tempPoint.arrPoints[i] = arrPoints[i];*/
+
+		
+			/*delete[] tempArr;*/
 	}
-	return true; //successful connection
+	return tempPoint; //successful connection
 }
 //delete connection with point
 //if returned value is false there was no line between the points
-bool Point::delContPoint(Point* _contPoint)
+Point* Point::delContPoint( Point* _contPoint)
 {
+	Point* tempPoint = new Point[1];
+	tempPoint = _contPoint;
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	if (numbSon != 0)
+	if (tempPoint->numbSon != 0)
 	{
-		while (arrPoints[i].name != _contPoint->name && i != numbSon)
+		while (tempPoint->arrPoints[i].name != name && i != tempPoint->numbSon)
 			i++;
 
-		if (i == numbSon)
-			return false; //there was no line between the points
+		if (i == tempPoint->numbSon)
+			return NULL; //there was no line between the points
 
-		Point* tempArr = new Point[numbSon - 1];
+		Point* tempArr = new Point[tempPoint->numbSon - 1];
 
-		while (j < numbSon - 1)
+		while (j < tempPoint->numbSon - 1)
 		{
 			if (k != i)
 			{
-				tempArr[j] = arrPoints[k];
+				tempArr[j] = tempPoint->arrPoints[k];
 				j++;
 				k++;
 			}
@@ -122,23 +136,20 @@ bool Point::delContPoint(Point* _contPoint)
 				k++;
 		}
 
-		/*for (i = 0; i < numbSon; i++)
-			arrPoints[i].~Point();*/
 
-		numbSon--;
 
-		arrPoints = new Point[numbSon];
-		for (i = 0; i < numbSon; i++)
-			arrPoints[i] = tempArr[i];
+		tempPoint->numbSon--;
 
-		/*for (i = 0; i < numbSon; i++)
-			tempArr[i].~Point();*/
+		tempPoint->arrPoints = new Point[tempPoint->numbSon];
+		for (i = 0; i < tempPoint->numbSon; i++)
+			tempPoint->arrPoints[i] = tempArr[i];
+		
 		delete[]tempArr;
 
-		return true; //successful deletion
+		return tempPoint; //successful deletion
 	}
 	else
-		return false; //there was no line between the points
+		return NULL; //there was no line between the points
 }
 
 //Point* Point::search(int _name, Point* _point)
@@ -185,16 +196,20 @@ bool Point::delContPoint(Point* _contPoint)
 //	}
 //}
 
-Point* Point::deepSearch(int _name, Figure* _figure)
+Point* Point::deepSearch(int _name, Figure& _figure)
 {
+	Figure fig;
+	//fig = _figure;
 	/*bool flag = false;*/
-	int* nodes = new int[_figure->getMaxNumber()];
-	for (int i = 0; i < _figure->getMaxNumber(); i++)
+	int* nodes = new int[_figure.getMaxNumber()];
+	for (int i = 0; i < _figure.getMaxNumber(); i++)
 	{
 		nodes[i] = 0;
 	}
 	std::stack<Point*> tempStack;
-	tempStack.push(_figure->getRoot());
+	/*Point* temp = new Point[1];*/
+	
+	tempStack.push(_figure.root);
 	while (!tempStack.empty())
 	{
 		Point* node = tempStack.top();

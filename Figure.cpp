@@ -8,7 +8,7 @@ using std::endl;
 
 Figure::Figure()
 {
-	activePoint = &Point();
+	activePoint = new Point[1];
 	count = 0;
 	maxNumber = 0;
 }
@@ -31,23 +31,30 @@ Figure::Figure(int _x, int _y, int _name)
 //add point (and connect it with active point)
 void Figure::addPoint(Point* obj)
 {
+	Point* tempPoint =  new Point[1];
+	tempPoint = obj;
 	maxNumber++;
 	count++;
-	obj->name = maxNumber;
-	activePoint->contPoint(obj);
-	//obj->contPoint(activePoint);
-	activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
-
+	tempPoint->name = maxNumber;
+	activePoint = tempPoint->contPoint(activePoint);
+	tempPoint = activePoint->contPoint(tempPoint);
+	/*obj = tempPoint;*/
+	//activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
 }
 //delete line between points
 void Figure::deleteLine(Point* obj, bool from_file)
 {
-	bool flag = activePoint->delContPoint(obj);
-	if (flag)
+	Point* tempPoint = new Point[1];
+	tempPoint = obj;
+
+
+	tempPoint = activePoint->delContPoint(tempPoint);
+	if (tempPoint != NULL)
 	{
-		obj->delContPoint(activePoint);
+		/*activePoint = tempPoint2;*/
+		activePoint = tempPoint->delContPoint(activePoint);
 		//if delete line between isolated point and another
-		if ((obj->getNumbSon() == 0) && (obj->getName() != root->getName()))
+		if ((tempPoint->getNumbSon() == 0) && (tempPoint->getName() != root->getName()))
 			count--;
 		if ((activePoint->getNumbSon() == 0) && (activePoint->getName() != root->getName()))
 		{
@@ -60,14 +67,15 @@ void Figure::deleteLine(Point* obj, bool from_file)
 			cout << "there was no line between these points" << endl << endl;
 }
 //connect added point with active point
-void Figure::contIsolPoint(Point* obj1)
+void Figure::contIsolPoint(Point* obj)
 {
-	bool flag;
-		flag = activePoint->contPoint(obj1);
-		if (flag)
+	Point* tempPoint = new Point[1];
+	tempPoint = obj;
+	activePoint = tempPoint->contPoint(activePoint);
+		if (tempPoint != NULL)
 		{
-			/*activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);*/
-			obj1->contPoint(activePoint);
+			//activePoint->getArrPoints()[activePoint->getNumbSon() - 1].contPoint(activePoint);
+			tempPoint = activePoint->contPoint(tempPoint);
 		}
 	else
 		cout << "there was already a line between these  points" << endl << endl;
@@ -99,38 +107,72 @@ void Figure::status()
 }
 
 //bypass for search the point
-/*Point* Figure::byPass(int _name, Point* _obj) //  in the first obj is active point
+Point* Figure::byPass(int _name, Point* _obj) //  in the first obj is active point
 {
+	Point* temp = new Point[1];
+	temp = _obj;
+	int* arr = new int[maxNumber];
+	int count = 0;
+	bool flag = false;
 	bool found = false;
-	for (int i = 0; i < _obj->getNumbSon(); i++)
+	if (temp->getName() == _name)
+		return temp;
+	for (int i = 0; i < temp->getNumbSon(); i++)
 	{
-		if (_obj->getArrPoints()[i].isLocked() == true)
+		for (int j = 0; j < count; j++)
+		{
+			if (temp->getArrPoints()[i].getName() == arr[j])
+			{
+				flag = true;
+				break;
+			}
+			else
+				continue;
+		}
+		if (flag == true)
+		{
+			flag = false;
 			continue;
-		else if (_obj->getArrPoints()[i].getName() != _name)
+		}
+		else if (temp->getArrPoints()[i].getName() != _name)
 			continue;
 		else
 		{
-			std::cout << _obj->getArrPoints()[i].getName();
 			found = true;
-			return  &_obj->getArrPoints()[i];
+			return  &temp->getArrPoints()[i];
 		}
+		arr[count] = temp->getName();
+		count++;
 	}
-	_obj->lock();
 	if (found != true)
 	{
-		for (int i = 0; i < _obj->getNumbSon(); i++)
+		found = false;
+		for (int i = 0; i < temp->getNumbSon(); i++)
 		{
-			if (_obj->getArrPoints()[i].isLocked() == true)
+			for (int j = 0; j < count; j++)
+			{
+				if (temp->getArrPoints()[i].getName() == arr[j])
+				{
+					flag = true;
+					break;
+				}
+				else
+					continue;
+			}
+			if (flag == true)
+			{
+				flag = false;
 				continue;
+			}
 			else
-				byPass(_name, &_obj->getArrPoints()[i]);
+				byPass(_name, &(temp->getArrPoints()[i]));
 		}
 	}
-}*/
+}
 
-//--properties--
+//--properties-
 
-Point* Figure::getActivePoint()
+ Point* Figure::getActivePoint()
 {
 	return activePoint;
 }
@@ -138,15 +180,20 @@ void Figure::setActivePoint(Point* obj)
 {
 	activePoint = obj;
 }
-int Figure::getCount()
+ int Figure::getCount()
 {
 	return count;
 }
-Point* Figure::getRoot()
+ Point* Figure::getRoot()
 {
 	return root;
 }
-int Figure::getMaxNumber()
+
+ void Figure:: setRoot(Point* obj)
+ {
+	 root = obj;
+ }
+ int Figure::getMaxNumber()
 {
 	return maxNumber;
 }

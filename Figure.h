@@ -29,12 +29,13 @@ public:
 	void createFigure(Point _point);
 	void status();
 	void contIsolPoint(Point* obj1);
-	//Point* byPass(int _name, Point* _obj);
+	Point* byPass(int _name, Point* _obj);
 
 	//--properties--
 
 	Point* getActivePoint();
 	Point* getRoot();
+	void setRoot(Point* obj);
 	void setActivePoint(Point* obj);
 	int getCount();
 	int getMaxNumber();

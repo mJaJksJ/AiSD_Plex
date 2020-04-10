@@ -31,13 +31,13 @@ public:
 
 	//--methods--
 
-	bool contPoint(Point* _contPoint);
-	bool delContPoint(Point* _contPoint);
+	Point* contPoint(Point* _contPoint);
+	Point* delContPoint(Point* _contPoint);
 	//Point* search(int _name, Point* _obj);
-	Point* deepSearch(int _name, Figure* _figure);
+	Point* deepSearch(int _name,  Figure& _figure);
 
 	//--properties--
-
+public:
 	void setName(int _name);
 	int getName();
 	int getNumbSon();
