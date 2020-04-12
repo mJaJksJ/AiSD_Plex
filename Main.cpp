@@ -1,13 +1,15 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <fstream>
 #include "Figure.h"
 #include "Point.h"
 #include <SFML/Graphics.hpp>
+#include <list>
 
 using namespace sf;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::list;
 
 const char filename[] = "PlexFile.txt";
 
@@ -36,12 +38,12 @@ void loadFromFile(Figure* _tree)
 				if (i == 0)
 				{
 					_tree->createFigure(Point(_x, _y));
-					_tree->getRoot()->setName(_name);
+					_tree->getActivePoint()->setName(_name);
 				}
 				else
 				{
 					_tree->addPoint(&Point(_x, _y));
-					_tree->getRoot()->getArrPoints()[_tree->getRoot()->getNumbSon() - 1].setName(_name);
+					_tree->getActivePoint()->getArrPoints()[_tree->getActivePoint()->getNumbSon() - 1]->setName(_name);
 				}
 			}
 			_tree->setMaxNumber(_name);
@@ -52,15 +54,15 @@ void loadFromFile(Figure* _tree)
 				for (int j = 0; j < _numbSon; j++)
 				{
 					in >> _nameOfSon;
-					tempPoint1 = _tree->getRoot()->deepSearch(_name, _tree);
-					tempPoint2 = _tree->getRoot()->deepSearch(_nameOfSon, _tree);
+					tempPoint1 = _tree->getActivePoint()->deepSearch(_name, _tree);
+					tempPoint2 = _tree->getActivePoint()->deepSearch(_nameOfSon, _tree);
 					bool flag = tempPoint1->contPoint(tempPoint2);
 					tempPoint2->contPoint(tempPoint1);
-					if (_name == _tree->getRoot()->getName())
+					if (_name == _tree->getActivePoint()->getName())
 						for (int k = 0; k < _count; k++)
 							if (names[k] == _nameOfSon)
 								flags[k] = flag;
-					if (_nameOfSon == _tree->getRoot()->getName())
+					if (_nameOfSon == _tree->getActivePoint()->getName())
 						for (int k = 0; k < _count; k++)
 							if (names[k] == _name)
 								flags[k] = flag;
@@ -71,10 +73,10 @@ void loadFromFile(Figure* _tree)
 			{
 				if (flags[i] == true)
 				{
-					tempPoint1 = _tree->getRoot()->deepSearch(names[i], _tree);
+					tempPoint1 = _tree->getActivePoint()->deepSearch(names[i], _tree);
 					_tree->setActivePoint(tempPoint1);
-					_tree->deleteLine(_tree->getRoot(), true);
-					_tree->setActivePoint(_tree->getRoot());
+					_tree->deleteLine(_tree->getActivePoint(), true);
+					_tree->setActivePoint(_tree->getActivePoint());
 				}
 			}
 		}
@@ -108,7 +110,7 @@ void saveToFile(Figure* _tree)
 			for (int i = 0; i <= _tree->getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
-				tempPoint = _tree->getRoot()->deepSearch(i, _tree);
+				tempPoint = _tree->getActivePoint()->deepSearch(i, _tree);
 				if (tempPoint != NULL)
 				{
 					out << tempPoint->getName() << " " << tempPoint->getX() << " " << tempPoint->getY() << endl;
@@ -117,13 +119,13 @@ void saveToFile(Figure* _tree)
 			for (int i = 0; i <= _tree->getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
-				tempPoint = _tree->getRoot()->deepSearch(i, _tree);
+				tempPoint = _tree->getActivePoint()->deepSearch(i, _tree);
 				if (tempPoint != NULL)
 				{
 					out << tempPoint->getName() << " " << tempPoint->getNumbSon() << endl;
 					for (int j = 0; j < tempPoint->getNumbSon(); j++)
 					{
-						out << tempPoint->getArrPoints()[j].getName() << endl;
+						out << tempPoint->getArrPoints()[j]->getName() << endl;
 					}
 				}
 			}
@@ -166,6 +168,7 @@ void main()
 	int thisStatus = -1;
 	//our figure
 	Figure tree;
+	list<Point> treePoints = {};
 	//loadFromFile(&tree);
 	Point* tempPoint1;
 	Point* tempPoint2;
@@ -173,73 +176,73 @@ void main()
 	int _count, _name, _x, _y, _numbSon, _nameOfSon;
 	int* names;
 	bool* flags;
-	try
-	{
-		if (in.is_open())
-		{
-			in >> _count;
-			names = new int[_count];
-			flags = new bool[_count];
-			//load all points without arrPoints
-			for (int i = 0; i < _count; i++)
-			{
-				in >> _name >> _x >> _y;
-				names[i] = _name; flags[i] = true;
-				if (i == 0)
-				{
-					tree.createFigure(Point(_x, _y));
-					tree.getRoot()->setName(_name);
-				}
-				else
-				{
-					tree.addPoint(&Point(_x, _y));
-					tree.getRoot()->getArrPoints()[tree.getRoot()->getNumbSon() - 1].setName(_name);
-				}
-			}
-			tree.setMaxNumber(_name);
-			//add connection with points
-			for (int i = 0; i < _count; i++)
-			{
-				in >> _name >> _numbSon;
-				for (int j = 0; j < _numbSon; j++)
-				{
-					in >> _nameOfSon;
-					tempPoint1 = tree.getRoot()->deepSearch(_name, &tree);
-					tempPoint2 = tree.getRoot()->deepSearch(_nameOfSon, &tree);
-					bool flag = tempPoint1->contPoint(tempPoint2);
-					tempPoint2->contPoint(tempPoint1);
-					if (_name == tree.getRoot()->getName())
-						for (int k = 0; k < _count; k++)
-							if (names[k] == _nameOfSon)
-								flags[k] = flag;
-					if (_nameOfSon == tree.getRoot()->getName())
-						for (int k = 0; k < _count; k++)
-							if (names[k] == _name)
-								flags[k] = flag;
-				}
-			}
-			//control excess connections
-			for (int i = 0; i < _count; i++)
-			{
-				if (flags[i] == true)
-				{
-					tempPoint1 = tree.getRoot()->deepSearch(names[i], &tree);
-					tree.setActivePoint(tempPoint1);
-					tree.deleteLine(tree.getRoot(), true);
-					tree.setActivePoint(tree.getRoot());
-				}
-			}
-		}
-		else
-		{
-			throw 1;
-		}
-		in.close();
-	}
-	catch (int e)
-	{
-		cout << "File is not found" << endl;
-	}
+	//try
+	//{
+	//	if (in.is_open())
+	//	{
+	//		in >> _count;
+	//		names = new int[_count];
+	//		flags = new bool[_count];
+	//		//load all points without arrPoints
+	//		for (int i = 0; i < _count; i++)
+	//		{
+	//			in >> _name >> _x >> _y;
+	//			names[i] = _name; flags[i] = true;
+	//			if (i == 0)
+	//			{
+	//				tree.createFigure(Point(_x, _y));
+	//				tree.getActivePoint()->setName(_name);
+	//			}
+	//			else
+	//			{
+	//				tree.addPoint(&Point(_x, _y));
+	//				tree.getActivePoint()->getArrPoints()[tree.getActivePoint()->getNumbSon() - 1]->setName(_name);
+	//			}
+	//		}
+	//		tree.setMaxNumber(_name);
+	//		//add connection with points
+	//		for (int i = 0; i < _count; i++)
+	//		{
+	//			in >> _name >> _numbSon;
+	//			for (int j = 0; j < _numbSon; j++)
+	//			{
+	//				in >> _nameOfSon;
+	//				tempPoint1 = tree.getActivePoint()->deepSearch(_name, &tree);
+	//				tempPoint2 = tree.getActivePoint()->deepSearch(_nameOfSon, &tree);
+	//				bool flag = tempPoint1->contPoint(tempPoint2);
+	//				tempPoint2->contPoint(tempPoint1);
+	//				if (_name == tree.getActivePoint()->getName())
+	//					for (int k = 0; k < _count; k++)
+	//						if (names[k] == _nameOfSon)
+	//							flags[k] = flag;
+	//				if (_nameOfSon == tree.getActivePoint()->getName())
+	//					for (int k = 0; k < _count; k++)
+	//						if (names[k] == _name)
+	//							flags[k] = flag;
+	//			}
+	//		}
+	//		//control excess connections
+	//		for (int i = 0; i < _count; i++)
+	//		{
+	//			if (flags[i] == true)
+	//			{
+	//				tempPoint1 = tree.getActivePoint()->deepSearch(names[i], &tree);
+	//				tree.setActivePoint(tempPoint1);
+	//				tree.deleteLine(tree.getActivePoint(), true);
+	//				tree.setActivePoint(tree.getActivePoint());
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		throw 1;
+	//	}
+	//	in.close();
+	//}
+	//catch (int e)
+	//{
+	//	cout << "File is not found" << endl;
+	//}
 
 
 	while (window.isOpen())
@@ -271,7 +274,7 @@ void main()
 					{
 						cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 						cin >> name; cout << endl;
-						tree.contIsolPoint(tree.getRoot()->deepSearch(name, &tree));
+						tree.contIsolPoint(tree.getActivePoint()->deepSearch(name, &tree));
 					}
 					tree.status();	cout << endl;
 				}
@@ -280,7 +283,7 @@ void main()
 					thisStatus = deleteLine;
 					cout << "delete line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 					cin >> name; cout << endl;
-					tree.deleteLine(tree.getRoot()->deepSearch(name, &tree), false);
+					tree.deleteLine(tree.getActivePoint()->deepSearch(name, &tree), false);
 					tree.status();	cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num3)
@@ -288,7 +291,7 @@ void main()
 					thisStatus = setActivePoint;
 					cout << "change active point:: \n(write name for new active point)\nnew active point: #";
 					cin >> name;
-					tree.setActivePoint(tree.getRoot()->deepSearch(name, &tree));
+					tree.setActivePoint(tree.getActivePoint()->deepSearch(name, &tree));
 					cout << endl;
 					tree.status();
 				}
@@ -301,11 +304,13 @@ void main()
 					{
 						if (tree.getCount() == 0)
 						{
-							tree.createFigure(Point(event.mouseButton.x, event.mouseButton.y));
+							treePoints.push_back(Point(event.mouseButton.x, event.mouseButton.y));
+							tree.createFigure(treePoints.back());
 						}
 						else
 						{
-							tree.addPoint(&Point(event.mouseButton.x, event.mouseButton.y));
+							treePoints.push_back(Point(event.mouseButton.x, event.mouseButton.y));
+							tree.addPoint(&treePoints.back());
 						}
 						cout << "New point: " << tree.getCount() << endl;
 						cout << "x: " << event.mouseButton.x << endl;
@@ -329,21 +334,19 @@ void main()
 			for (int i = 1; i <= tree.getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
-				tempPoint = tree.getRoot()->deepSearch(i, &tree); //возвращает нулл и поэтому косяк
+				tempPoint = tree.getActivePoint()->deepSearch(i, &tree);
 				if (tempPoint != NULL)
 				{
 					for (int j = 0; j < tempPoint->getNumbSon(); j++)
 					{
 						line[0] = Vertex(Vector2f(tempPoint->getX(), tempPoint->getY()));
-						line[1] = Vertex(Vector2f(tempPoint->getArrPoints()[j].getX(), tempPoint->getArrPoints()[j].getY()));
+						line[1] = Vertex(Vector2f(tempPoint->getArrPoints()[j]->getX(), tempPoint->getArrPoints()[j]->getY()));
 						window.draw(line, 2, sf::Lines);
 					}
 					sfmlPoint.setPosition(tempPoint->getX() - 20, tempPoint->getY() - 20);
 					sfmlPoint.setTextureRect(IntRect(20 * (tempPoint->getName() % 10), 20 * (tempPoint->getName() / 10), 20, 20));
 					window.draw(sfmlPoint);
 				}
-				else
-					cout << "something wrong" << endl;
 			}
 
 		}

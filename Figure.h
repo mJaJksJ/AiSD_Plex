@@ -8,7 +8,7 @@ private:
 	//the point we are working with
 	Point* activePoint;
 	//the root point
-	Point* root;
+	//Point* root;
 	//amount of points
 	int count;
 	//max number of point (name)
@@ -29,13 +29,12 @@ public:
 	void createFigure(Point _point);
 	void status();
 	void contIsolPoint(Point* obj1);
-	Point* byPass(int _name, Point* _obj);
+	//Point* byPass(int _name, Point* _obj);
 
 	//--properties--
 
 	Point* getActivePoint();
-	Point* getRoot();
-	void setRoot(Point* obj);
+	//Point* getRoot();
 	void setActivePoint(Point* obj);
 	int getCount();
 	int getMaxNumber();

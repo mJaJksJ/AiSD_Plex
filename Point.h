@@ -9,7 +9,7 @@ private:
 	//coordinates
 	int x, y;
 	//array of point, that connected with THIS point
-	Point* arrPoints;
+	Point** arrPoints;
 	//name of point
 	int name;
 	//count of sons
@@ -31,17 +31,17 @@ public:
 
 	//--methods--
 
-	Point* contPoint(Point* _contPoint);
-	Point* delContPoint(Point* _contPoint);
+	bool contPoint(Point* _contPoint);
+	bool delContPoint(Point* _contPoint);
 	//Point* search(int _name, Point* _obj);
-	Point* deepSearch(int _name,  Figure& _figure);
+	Point* deepSearch(int _name, Figure* _figure);
 
 	//--properties--
-public:
+
 	void setName(int _name);
 	int getName();
 	int getNumbSon();
-	Point* getArrPoints();
+	Point** getArrPoints();
 	int getX();
 	int getY();
 };
