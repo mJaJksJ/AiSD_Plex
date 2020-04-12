@@ -7,8 +7,6 @@ private:
 
 	//the point we are working with
 	Point* activePoint;
-	//the root point
-	//Point* root;
 	//amount of points
 	int count;
 	//max number of point (name)
@@ -19,23 +17,21 @@ public:
 	Figure();
 	Figure(int _x, int _y, int _name);
 	//destructor
-	//~Figure();
+	~Figure();
 
 
 	//--methods--
 
-	void addPoint(Point* obj1);
-	void deleteLine(Point* obj1, bool out_file);
+	void addPoint(Point* _point);
+	void deleteLine(Point* _point, bool out_file);
 	void createFigure(Point _point);
 	void status();
-	void contIsolPoint(Point* obj1);
-	//Point* byPass(int _name, Point* _obj);
+	void connectIsolatedPoint(Point* _point);
 
 	//--properties--
 
 	Point* getActivePoint();
-	//Point* getRoot();
-	void setActivePoint(Point* obj);
+	void setActivePoint(Point* _point);
 	int getCount();
 	int getMaxNumber();
 	void setMaxNumber(int _maxNumber);

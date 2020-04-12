@@ -45,8 +45,8 @@ void saveToFile(Figure* _tree)
 				tempPoint = _tree->getActivePoint()->deepSearch(i, _tree);
 				if (tempPoint != NULL)
 				{
-					out << tempPoint->getName() << " " << tempPoint->getNumbSon() << endl;
-					for (int j = 0; j < tempPoint->getNumbSon(); j++)
+					out << tempPoint->getName() << " " << tempPoint->getRelationCount() << endl;
+					for (int j = 0; j < tempPoint->getRelationCount(); j++)
 					{
 						out << tempPoint->getArrPoints()[j]->getName() << endl;
 					}
@@ -92,14 +92,15 @@ void main()
 	//our figure
 	Figure tree;
 	list<Point> treePoints = {};
-	//loadFromFile(&tree);
-	Point* tempPoint1;
-	Point* tempPoint2;
-	Point* tempActivePoint;
+
+	//load from file
 	std::ifstream in(filename);
 	int _count, _name, _x, _y, _numbSon, _nameOfSon;
 	int* names;
 	bool* flags;
+	Point* tempPoint1;
+	Point* tempPoint2;
+	Point* tempActivePoint;
 	try
 	{
 		if (in.is_open())
@@ -140,16 +141,28 @@ void main()
 					tempActivePoint = tree.getActivePoint();
 					tempPoint1 = tempActivePoint->deepSearch(_name, &tree);
 					tempPoint2 = tempActivePoint->deepSearch(_nameOfSon, &tree);
-					bool flag = tempPoint1->contPoint(tempPoint2);
-					tempPoint2->contPoint(tempPoint1);
+					bool flag = tempPoint1->connectPoint(tempPoint2);
+					tempPoint2->connectPoint(tempPoint1);
 					if (_name == tempActivePoint->getName())
+					{
 						for (int k = 0; k < _count; k++)
+						{
 							if (names[k] == _nameOfSon)
+							{
 								flags[k] = flag;
+							}
+						}
+					}
 					if (_nameOfSon == tempActivePoint->getName())
+					{
 						for (int k = 0; k < _count; k++)
+						{
 							if (names[k] == _name)
+							{
 								flags[k] = flag;
+							}
+						}
+					}
 					tree.setActivePoint(tempActivePoint);
 				}
 			}
@@ -174,7 +187,7 @@ void main()
 		cout << "File is not found" << endl;
 	}
 
-
+	//work with plex
 	while (window.isOpen())
 	{
 		int name;
@@ -199,12 +212,21 @@ void main()
 				{
 					thisStatus = addLine;
 					if (tree.getCount() < 3)
+					{
 						cout << "add line::\nnot enough points, first add at least three points" << endl << endl;
+					}
 					else
 					{
 						cout << "add line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 						cin >> name; cout << endl;
-						tree.contIsolPoint(tree.getActivePoint()->deepSearch(name, &tree));
+						if (tree.getActivePoint()->deepSearch(name, &tree) == NULL)
+						{
+							cout << endl << "there is no point with this name" << endl << endl;
+						}
+						else
+						{
+							tree.connectIsolatedPoint(tree.getActivePoint()->deepSearch(name, &tree));
+						}
 					}
 					tree.status();	cout << endl;
 				}
@@ -213,7 +235,14 @@ void main()
 					thisStatus = deleteLine;
 					cout << "delete line between active and your points:: \n(write name of point)\nline beetwen " << tree.getActivePoint()->getName() << " and : ";
 					cin >> name; cout << endl;
-					tree.deleteLine(tree.getActivePoint()->deepSearch(name, &tree), false);
+					if (tree.getActivePoint()->deepSearch(name, &tree) == NULL)
+					{
+						cout << endl << "there is no point with this name" << endl << endl;
+					}
+					else
+					{
+						tree.deleteLine(tree.getActivePoint()->deepSearch(name, &tree), false);
+					}
 					tree.status();	cout << endl;
 				}
 				else if (event.key.code == Keyboard::Num3)
@@ -221,7 +250,15 @@ void main()
 					thisStatus = setActivePoint;
 					cout << "change active point:: \n(write name for new active point)\nnew active point: #";
 					cin >> name;
-					tree.setActivePoint(tree.getActivePoint()->deepSearch(name, &tree));
+					tempActivePoint = tree.getActivePoint()->deepSearch(name, &tree);
+					if (tempActivePoint != NULL)
+					{
+						tree.setActivePoint(tempActivePoint);
+					}
+					else
+					{
+						cout << endl << "there is no point with this name" << endl << endl;
+					}
 					cout << endl;
 					tree.status();
 				}
@@ -260,14 +297,13 @@ void main()
 			//---Drawer---
 			Point* tempPoint;
 			window.clear();
-			// <------------------------------------------------------------------------ THERE IS A BIG PROBLEM WITH DRAWER OR SEARCH
 			for (int i = 1; i <= tree.getMaxNumber(); i++)
 			{
 				tempPoint = NULL;
 				tempPoint = tree.getActivePoint()->deepSearch(i, &tree);
 				if (tempPoint != NULL)
 				{
-					for (int j = 0; j < tempPoint->getNumbSon(); j++)
+					for (int j = 0; j < tempPoint->getRelationCount(); j++)
 					{
 						line[0] = Vertex(Vector2f(tempPoint->getX(), tempPoint->getY()));
 						line[1] = Vertex(Vector2f(tempPoint->getArrPoints()[j]->getX(), tempPoint->getArrPoints()[j]->getY()));

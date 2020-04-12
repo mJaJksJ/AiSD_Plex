@@ -13,7 +13,7 @@ private:
 	//name of point
 	int name;
 	//count of sons
-	int numbSon;
+	int relationCount;
 
 public:
 	//--constructors--
@@ -23,24 +23,23 @@ public:
 	Point(int _x, int _y);
 
 	//destructor
-	//~Point();
+	~Point();
 
 	//--operators--
 
-	Point& operator= (const Point& obj);
+	Point& operator= (const Point& _point);
 
 	//--methods--
 
-	bool contPoint(Point* _contPoint);
-	bool delContPoint(Point* _contPoint);
-	//Point* search(int _name, Point* _obj);
+	bool connectPoint(Point* _point);
+	bool disconnectPoint(Point* _point);
 	Point* deepSearch(int _name, Figure* _figure);
 
 	//--properties--
 
 	void setName(int _name);
 	int getName();
-	int getNumbSon();
+	int getRelationCount();
 	Point** getArrPoints();
 	int getX();
 	int getY();
