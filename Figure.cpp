@@ -37,7 +37,6 @@ void Figure::addPoint(Point* obj)
 	activePoint->contPoint(obj);
 	//obj->contPoint(activePoint);
 	activePoint->getArrPoints()[activePoint->getNumbSon() - 1]->contPoint(activePoint);
-
 }
 //delete line between points
 void Figure::deleteLine(Point* obj, bool from_file)

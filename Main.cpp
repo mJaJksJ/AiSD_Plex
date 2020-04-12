@@ -15,83 +15,6 @@ const char filename[] = "PlexFile.txt";
 
 enum condition { addPoint, addLine, deleteLine, setActivePoint };
 
-void loadFromFile(Figure* _tree)
-{
-	Point* tempPoint1;
-	Point* tempPoint2;
-	std::ifstream in(filename);
-	int _count, _name, _x, _y, _numbSon, _nameOfSon;
-	int* names;
-	bool* flags;
-	try
-	{
-		if (in.is_open())
-		{
-			in >> _count;
-			names = new int[_count];
-			flags = new bool[_count];
-			//load all points without arrPoints
-			for (int i = 0; i < _count; i++)
-			{
-				in >> _name >> _x >> _y;
-				names[i] = _name; flags[i] = true;
-				if (i == 0)
-				{
-					_tree->createFigure(Point(_x, _y));
-					_tree->getActivePoint()->setName(_name);
-				}
-				else
-				{
-					_tree->addPoint(&Point(_x, _y));
-					_tree->getActivePoint()->getArrPoints()[_tree->getActivePoint()->getNumbSon() - 1]->setName(_name);
-				}
-			}
-			_tree->setMaxNumber(_name);
-			//add connection with points
-			for (int i = 0; i < _count; i++)
-			{
-				in >> _name >> _numbSon;
-				for (int j = 0; j < _numbSon; j++)
-				{
-					in >> _nameOfSon;
-					tempPoint1 = _tree->getActivePoint()->deepSearch(_name, _tree);
-					tempPoint2 = _tree->getActivePoint()->deepSearch(_nameOfSon, _tree);
-					bool flag = tempPoint1->contPoint(tempPoint2);
-					tempPoint2->contPoint(tempPoint1);
-					if (_name == _tree->getActivePoint()->getName())
-						for (int k = 0; k < _count; k++)
-							if (names[k] == _nameOfSon)
-								flags[k] = flag;
-					if (_nameOfSon == _tree->getActivePoint()->getName())
-						for (int k = 0; k < _count; k++)
-							if (names[k] == _name)
-								flags[k] = flag;
-				}
-			}
-			//control excess connections
-			for (int i = 0; i < _count; i++)
-			{
-				if (flags[i] == true)
-				{
-					tempPoint1 = _tree->getActivePoint()->deepSearch(names[i], _tree);
-					_tree->setActivePoint(tempPoint1);
-					_tree->deleteLine(_tree->getActivePoint(), true);
-					_tree->setActivePoint(_tree->getActivePoint());
-				}
-			}
-		}
-		else
-		{
-			throw 1;
-		}
-		in.close();
-	}
-	catch (int e)
-	{
-		cout << "File is not found" << endl;
-	}
-}
-
 void saveToFile(Figure* _tree)
 {
 	std::ofstream out(filename);
@@ -172,77 +95,84 @@ void main()
 	//loadFromFile(&tree);
 	Point* tempPoint1;
 	Point* tempPoint2;
+	Point* tempActivePoint;
 	std::ifstream in(filename);
 	int _count, _name, _x, _y, _numbSon, _nameOfSon;
 	int* names;
 	bool* flags;
-	//try
-	//{
-	//	if (in.is_open())
-	//	{
-	//		in >> _count;
-	//		names = new int[_count];
-	//		flags = new bool[_count];
-	//		//load all points without arrPoints
-	//		for (int i = 0; i < _count; i++)
-	//		{
-	//			in >> _name >> _x >> _y;
-	//			names[i] = _name; flags[i] = true;
-	//			if (i == 0)
-	//			{
-	//				tree.createFigure(Point(_x, _y));
-	//				tree.getActivePoint()->setName(_name);
-	//			}
-	//			else
-	//			{
-	//				tree.addPoint(&Point(_x, _y));
-	//				tree.getActivePoint()->getArrPoints()[tree.getActivePoint()->getNumbSon() - 1]->setName(_name);
-	//			}
-	//		}
-	//		tree.setMaxNumber(_name);
-	//		//add connection with points
-	//		for (int i = 0; i < _count; i++)
-	//		{
-	//			in >> _name >> _numbSon;
-	//			for (int j = 0; j < _numbSon; j++)
-	//			{
-	//				in >> _nameOfSon;
-	//				tempPoint1 = tree.getActivePoint()->deepSearch(_name, &tree);
-	//				tempPoint2 = tree.getActivePoint()->deepSearch(_nameOfSon, &tree);
-	//				bool flag = tempPoint1->contPoint(tempPoint2);
-	//				tempPoint2->contPoint(tempPoint1);
-	//				if (_name == tree.getActivePoint()->getName())
-	//					for (int k = 0; k < _count; k++)
-	//						if (names[k] == _nameOfSon)
-	//							flags[k] = flag;
-	//				if (_nameOfSon == tree.getActivePoint()->getName())
-	//					for (int k = 0; k < _count; k++)
-	//						if (names[k] == _name)
-	//							flags[k] = flag;
-	//			}
-	//		}
-	//		//control excess connections
-	//		for (int i = 0; i < _count; i++)
-	//		{
-	//			if (flags[i] == true)
-	//			{
-	//				tempPoint1 = tree.getActivePoint()->deepSearch(names[i], &tree);
-	//				tree.setActivePoint(tempPoint1);
-	//				tree.deleteLine(tree.getActivePoint(), true);
-	//				tree.setActivePoint(tree.getActivePoint());
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		throw 1;
-	//	}
-	//	in.close();
-	//}
-	//catch (int e)
-	//{
-	//	cout << "File is not found" << endl;
-	//}
+	try
+	{
+		if (in.is_open())
+		{
+			in >> _count;
+			names = new int[_count];
+			flags = new bool[_count];
+			//load all points without arrPoints
+			for (int i = 0; i < _count; i++)
+			{
+				in >> _name >> _x >> _y;
+				names[i] = _name; flags[i] = true;
+				if (i == 0)
+				{
+					treePoints.push_back(Point(_x,_y));
+					treePoints.back().setName(_name);
+					tree.createFigure(treePoints.back());
+					tree.getActivePoint()->setName(_name);
+					tree.setMaxNumber(_name);
+				}
+				else
+				{
+					treePoints.push_back(Point(_x, _y));
+					treePoints.back().setName(_name);
+					tree.addPoint(&treePoints.back());
+					tree.getActivePoint()->deepSearch(tree.getMaxNumber(), &tree)->setName(_name);
+					tree.setMaxNumber(_name);
+				}
+			}
+			tree.setMaxNumber(_name);
+			//add connection with points
+			for (int i = 0; i < _count; i++)
+			{
+				in >> _name >> _numbSon;
+				for (int j = 0; j < _numbSon; j++)
+				{
+					in >> _nameOfSon;
+					tempActivePoint = tree.getActivePoint();
+					tempPoint1 = tempActivePoint->deepSearch(_name, &tree);
+					tempPoint2 = tempActivePoint->deepSearch(_nameOfSon, &tree);
+					bool flag = tempPoint1->contPoint(tempPoint2);
+					tempPoint2->contPoint(tempPoint1);
+					if (_name == tempActivePoint->getName())
+						for (int k = 0; k < _count; k++)
+							if (names[k] == _nameOfSon)
+								flags[k] = flag;
+					if (_nameOfSon == tempActivePoint->getName())
+						for (int k = 0; k < _count; k++)
+							if (names[k] == _name)
+								flags[k] = flag;
+					tree.setActivePoint(tempActivePoint);
+				}
+			}
+			//control excess connections
+			for (int i = 1; i < _count; i++)
+			{
+				if (flags[i] == true)
+				{
+					tempPoint1 = tree.getActivePoint()->deepSearch(names[i], &tree);
+					tree.deleteLine(tempPoint1, true);
+				}
+			}
+		}
+		else
+		{
+			throw 1;
+		}
+		in.close();
+	}
+	catch (int e)
+	{
+		cout << "File is not found" << endl;
+	}
 
 
 	while (window.isOpen())
